@@ -1,0 +1,165 @@
+---
+# @TODO: Needs fully compatible and transparent podman-compose support
+x-podman:
+  in_pod: false
+
+x-templates:
+  service: &service
+    mem_swappiness: 0
+    networks:
+      - bridge
+    restart: unless-stopped
+    security_opt:
+      - label:disable
+    userns_mode: keep-id:uid=0,gid=0
+
+configs:
+  security-file-server:
+    content: |
+      [general]
+      compression-level = "best"
+      health = true
+      log-level = "warn"
+
+  traefik-base:
+    content: |
+      ---
+      api:
+        basePath: /traefik/
+      certificatesResolvers:
+        letsencrypt:
+          acme:
+            email: ${CERTIFICATE_EMAIL:?}
+            keyType: EC384
+            tlsChallenge: true
+            storage: /certificates/acme.json
+      entrypoints:
+        http:
+          address: :80
+          http:
+            encodeQuerySemicolons: true
+            redirections:
+              entryPoint:
+                permanent: true
+                to: https
+          http3: {}
+          reusePort: true
+        https:
+          address: :443
+          asDefault: true
+          http:
+            encodeQuerySemicolons: true
+            tls:
+              certResolver: letsencrypt
+          http3: {}
+          reusePort: true
+      global:
+        sendAnonymousUsage: false
+      ping:
+        entryPoint: https
+        manualRouting: true
+      providers:
+        docker:
+          exposedByDefault: false
+          network: proxy_bridge
+          watch: true
+        file:
+          filename: /etc/traefik/providers.yml
+      ...
+
+  traefik-providers:
+    content: |
+      ---
+      http:
+        routers:
+          traefikDashboard:
+            middlewares:
+              - adminIpOnly
+            rule: PathPrefix("/traefik/api/") || PathPrefix("/traefik/dashboard/")
+            service: api@internal
+
+          traefikDashboardRedirect:
+            middlewares:
+              - traefikDashboardRedirect
+            rule: Path("/traefik") || Path("/traefik/")
+            service: noop@internal
+
+          traefikPing:
+            middlewares:
+              - localhostIpOnly
+            rule: Path("/traefik/ping")
+            service: ping@internal
+
+        middlewares:
+          adminIpOnly:
+            ipWhiteList:
+              sourceRange:
+                - ${ADMIN_IP:?}/32
+
+          localhostIpOnly:
+            ipWhiteList:
+              sourceRange:
+                - 127.0.0.0/8
+                - ::1/128
+
+          traefikDashboardRedirect:
+            redirectRegex:
+              regex: "^(.+)/traefik/?$"
+              replacement: "$${1}/traefik/dashboard/"
+              permanent: true
+      ...
+
+name: proxy
+
+networks:
+  bridge:
+
+services:
+  security-file-server:
+    <<: *service
+    configs:
+      - mode: 0440
+        source: security-file-server
+        target: /config.toml
+    depends_on:
+      traefik:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 8M
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/health"]
+    image: joseluisq/static-web-server:${STATIC_WEB_SERVER_VERSION:-2.36.0}-alpine
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.securityFile.rule=Path("/.well-known/security.txt")
+    volumes:
+      - ./security/security.txt:/public/.well-known/security.txt:ro
+
+  traefik:
+    <<: *service
+    configs:
+      - mode: 0440
+        source: traefik-base
+        target: /etc/traefik/traefik.yml
+      - mode: 0440
+        source: traefik-providers
+        target: /etc/traefik/providers.yml
+    deploy:
+      resources:
+        limits:
+          memory: 48M
+    extra_hosts:
+      - ${HOSTNAME:?}:127.0.0.1
+    healthcheck:
+      # @BUG: For some reason `traefik healthcheck` does not pass health checks with manual routing
+      test: ["CMD", "wget", "--spider", "-q", "https://${HOSTNAME:?}/traefik/ping"]
+    image: traefik:${TRAEFIK_VERSION:-3.3.3}
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock:ro
+      - ./certificates/acme.json:/certificates/acme.json
+...
