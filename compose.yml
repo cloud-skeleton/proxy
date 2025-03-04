@@ -55,9 +55,9 @@ configs:
           reusePort: true
       experimental:
         plugins:
-          returnStaticResponse:
-            moduleName: github.com/jamesmcroft/traefik-plugin-return-response
-            version: v1.0.1
+          staticResponse:
+            moduleName: github.com/jdel/staticresponse
+            version: v0.0.1
       global:
         sendAnonymousUsage: false
       ping:
@@ -115,9 +115,8 @@ configs:
 
           successResponse:
             plugin:
-              returnStaticResponse:
-                response:
-                  status_code: 200
+              staticResponse:
+                StatusCode: 200
 
           traefikDashboardRedirect:
             redirectRegex:
