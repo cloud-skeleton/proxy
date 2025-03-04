@@ -82,7 +82,7 @@ configs:
           sslLabsCertificateValidation:
             middlewares:
               - successResponse
-            rule: ClientIP("64.41.200.0/24") || ClientIP("2600:c02:1020:4202::/64")
+            rule: ClientIP("${SSL_LABS_IPV4_CIDR:-64.41.200.0/24}") || ClientIP("${SSL_LABS_IPV6_CIDR:-2600:c02:1020:4202::/64}")
             service: noop@internal
 
           traefikDashboard:
