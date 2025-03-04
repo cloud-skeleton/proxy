@@ -117,7 +117,10 @@ configs:
 
           securityHeaders:
             headers:
+              browserXssFilter: true
+              contentTypeNosniff: true
               forceStsHeader: true
+              frameDeny: true
               stsIncludeSubdomains: true
               stsPreload: true
               stsSeconds: 31536000
