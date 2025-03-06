@@ -27,7 +27,7 @@ The primary configuration is defined in the `compose.yml` file, which sets up tw
 ## Security File Rotation & Verification
 
 - **Monthly Rotation:**  
-  The `security.txt` file is automatically rotated every month. It is updated with new expiration dates and other dynamic information. To ensure the system always serves the latest version, it is recommended to automate a `git pull` followed by a `compose restart` (or a similar solution) on a monthly basis.
+  The `security.txt` file is automatically rotated every month. It is updated with new expiration dates and other dynamic information. To ensure the system always serves the latest version, it is recommended to automate a `git pull` followed by a `docker compose restart` (or a similar solution) on a monthly basis.
 
 - **Signature Verification:**  
   The `security.txt` file is PGP-signed to guarantee its authenticity. Alongside this file, the repository provides the public GPG key (`info@cloudskeleton.eu.public.asc`). Use this key to verify the signature of `security.txt` and ensure that it has not been tampered with.
@@ -139,13 +139,13 @@ The deployment is driven by a compose file that utilizes several environment var
    Run the following command to start the services:
 
    ```sh
-   compose up -d
+   docker compose up -d
    ```
 
 3. **Automate Updates**  
    To ensure the latest `security.txt` is always served, set up an automated job (e.g., via cron or CI/CD) to:
    - Pull the latest changes with `git pull`.
-   - Restart the services using `compose restart`.
+   - Restart the services using `docker compose restart`.
 
 4. **Verify the Security File**  
    Use the provided public GPG key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt` and ensure its integrity.
