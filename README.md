@@ -80,6 +80,13 @@ The deployment is driven by a compose file that utilizes several environment var
   DOCKER_SOCKET=/var/run/docker.sock
   ```
 
+- **HOSTNAME**  
+  *Description:* The hostname for the **[Traefik](https://doc.traefik.io/traefik/)** service. This is used in extra hosts and healthchecks.  
+  *Example:*  
+  ```env
+  HOSTNAME=proxy.example.com
+  ```
+
 - **SSL_LABS_IPV4_CIDR**  
   *Description:* The IPv4 CIDR block used for **[SSL Labs](https://www.ssllabs.com/ssltest/)** certificate validation.  
   *Default:* `64.41.200.0/24`  
@@ -100,6 +107,15 @@ The deployment is driven by a compose file that utilizes several environment var
 
 1. **Create a `.env` file**  
    Place a `.env` file in the repository root with the required variables. 
+
+   ```env
+   ADMIN_IP=203.0.113.42
+   CERTIFICATE_EMAIL=admin@example.com
+   DOCKER_SOCKET=/var/run/docker.sock
+   HOSTNAME=proxy.example.com
+   SSL_LABS_IPV4_CIDR=64.41.200.0/24
+   SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
+   ```
 
 2. **Deploy with [Docker Compose](https://docs.docker.com/compose/gettingstarted/)**  
    ```sh
