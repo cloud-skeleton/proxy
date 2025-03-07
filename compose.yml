@@ -5,6 +5,11 @@ x-podman:
 
 x-templates:
   service: &service
+    healthcheck: &service-healthcheck
+      interval: 10s
+      start_interval: 2s
+      start_period: 10s
+      timeout: 2s
     mem_swappiness: 0
     networks:
       - bridge
@@ -163,6 +168,7 @@ services:
         limits:
           memory: 8M
     healthcheck:
+      <<: *service-healthcheck
       test:
         - CMD
         - wget
@@ -190,14 +196,11 @@ services:
         limits:
           memory: 48M
     healthcheck:
-      interval: 10s
-      start_interval: 2s
-      start_period: 10s
+      <<: *service-healthcheck
       test:
         - CMD
         - traefik
         - healthcheck
-      timeout: 2s
     image: traefik:3.3.4
     ports:
       - 80:80
