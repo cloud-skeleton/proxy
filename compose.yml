@@ -69,6 +69,8 @@ configs:
             version: v0.1.2
       global:
         sendAnonymousUsage: false
+      log:
+        level: INFO
       ping:
         entryPoint: http
       providers:
