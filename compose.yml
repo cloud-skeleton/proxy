@@ -190,10 +190,14 @@ services:
         limits:
           memory: 48M
     healthcheck:
+      interval: 10s
+      start_interval: 2s
+      start_period: 10s
       test:
         - CMD
         - traefik
         - healthcheck
+      timeout: 2s
     image: traefik:3.3.4
     ports:
       - 80:80
