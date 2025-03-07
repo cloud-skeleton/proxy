@@ -9,7 +9,7 @@ x-templates:
       interval: 10s
       start_interval: 2s
       start_period: 10s
-      timeout: 2s
+      timeout: 5s
     mem_swappiness: 0
     networks:
       - bridge
