@@ -202,7 +202,7 @@ services:
     healthcheck:
       # @BUG: For some reason `traefik healthcheck` does not pass health checks with manual routing
       test: ["CMD", "wget", "--spider", "-q", "https://${HOSTNAME:?}/traefik/ping"]
-    image: traefik:3.3.4
+    image: traefik:3.3.3
     ports:
       - 80:80
       - 443:443
