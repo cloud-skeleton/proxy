@@ -58,6 +58,8 @@ configs:
               - security-headers@file
             tls:
               certResolver: letsencrypt
+              domains:
+                - main: ${HOSTNAME}
           http3: {}
           reusePort: true
       experimental:
