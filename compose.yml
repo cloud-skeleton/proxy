@@ -58,6 +58,8 @@ configs:
               - security-headers@file
             tls:
               certResolver: letsencrypt
+              domains:
+                - main: ${HOSTNAME:?}
           http3: {}
           reusePort: true
       experimental:
@@ -67,6 +69,8 @@ configs:
             version: v0.1.2
       global:
         sendAnonymousUsage: false
+      log:
+        level: INFO
       ping:
         entryPoint: http
       providers:
@@ -103,7 +107,7 @@ configs:
 
         middlewares:
           admin-ip-only:
-            ipWhiteList:
+            IPAllowList:
               sourceRange:
                 - ${ADMIN_IP:?}/32
 
@@ -207,5 +211,5 @@ services:
       - 443:443
     volumes:
       - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock:ro
-      - ./certificates/acme.json:/certificates/acme.json
+      - ./certificates:/certificates
 ...

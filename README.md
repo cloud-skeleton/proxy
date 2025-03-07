@@ -80,6 +80,13 @@ The deployment is driven by a compose file that utilizes several environment var
   DOCKER_SOCKET=/var/run/docker.sock
   ```
 
+- **HOSTNAME**  
+  *Description:* The hostname for the **[Traefik](https://doc.traefik.io/traefik/)** service. This is used in extra hosts and healthchecks.  
+  *Example:*  
+  ```env
+  HOSTNAME=proxy.example.com
+  ```
+
 - **SSL_LABS_IPV4_CIDR**  
   *Description:* The IPv4 CIDR block used for **[SSL Labs](https://www.ssllabs.com/ssltest/)** certificate validation.  
   *Default:* `64.41.200.0/24`  
@@ -101,12 +108,24 @@ The deployment is driven by a compose file that utilizes several environment var
 1. **Create a `.env` file**  
    Place a `.env` file in the repository root with the required variables. 
 
+   ```env
+   ADMIN_IP=203.0.113.42
+   CERTIFICATE_EMAIL=admin@example.com
+   DOCKER_SOCKET=/var/run/docker.sock
+   HOSTNAME=proxy.example.com
+   SSL_LABS_IPV4_CIDR=64.41.200.0/24
+   SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
+   ```
+
 2. **Deploy with [Docker Compose](https://docs.docker.com/compose/gettingstarted/)**  
+   Run the following command to start the services:
+
    ```sh
    docker compose up -d
    ```
 
 3. **Automate Updates**  
+   To ensure the latest `security.txt` is always served, set up an automated job (e.g., via cron or CI/CD) to:
    - Pull the latest changes with `git pull`.
    - Restart the services using `docker compose restart`.
 
@@ -114,6 +133,30 @@ The deployment is driven by a compose file that utilizes several environment var
    Use the provided public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt`.
 
 ## External Integration & DNS Setup
+
+- **Integration with Other Compose Files:**  
+  It is expected that users may run other compose files on the same machine. For these setups:
+  - Create an external network named `proxy_bridge` and attach your services to this network.
+  - **Do not expose ports directly in your service definitions; only the **[Traefik](https://doc.traefik.io/traefik/)** service should expose ports.**
+  - Control service exposure using simple **[Traefik](https://doc.traefik.io/traefik/)** labels. For example, in your own `compose.yml`:
+
+  ```yaml
+  networks:
+    proxy_bridge:
+      external: true
+
+  services:
+    my-service:
+      image: my-service-image
+      networks:
+        - proxy_bridge
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.customRouter.rule=Host("www.domain.com")
+  ```
+
+- **DNS Configuration:**  
+  Before using the reverse proxy, ensure that you set up the required DNS A record pointing your domain (e.g., `proxy.example.com`) to the IP address of the host running the **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)**. This is essential for proper routing of external traffic.
 
 - **[Traefik](https://doc.traefik.io/traefik/) Dashboard Access:**  
   The **[Traefik](https://doc.traefik.io/traefik/)** dashboard is accessible at the `/traefik` endpoint but only from the IP address specified in the `ADMIN_IP` variable.
