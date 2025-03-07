@@ -163,7 +163,12 @@ services:
         limits:
           memory: 8M
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/health"]
+      test:
+        - CMD
+        - wget
+        - --spider
+        - -q
+        - http://127.0.0.1/health
     image: joseluisq/static-web-server:2.36.0-alpine
     labels:
       - traefik.enable=true
