@@ -59,7 +59,7 @@ configs:
             tls:
               certResolver: letsencrypt
               domains:
-                - main: ${HOSTNAME}
+                - main: ${HOSTNAME:?}
           http3: {}
           reusePort: true
       experimental:
@@ -209,5 +209,5 @@ services:
       - 443:443
     volumes:
       - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock:ro
-      - ./certificates/acme.json:/certificates/acme.json
+      - ./certificates:/certificates
 ...
