@@ -3,6 +3,6 @@ updates:
     package-ecosystem: docker-compose
     schedule:
       interval: daily
-      time: 00:00
+      time: "00:00"
     target-branch: dependabot
 version: 2
