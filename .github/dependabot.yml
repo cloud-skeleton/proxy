@@ -1,8 +1,12 @@
 updates:
   - directory: /
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     package-ecosystem: docker-compose
     schedule:
       interval: daily
       time: "00:00"
-    target-branch: dependabot
+
 version: 2

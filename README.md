@@ -103,22 +103,6 @@ The deployment is driven by a compose file that utilizes several environment var
   SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
   ```
 
-- **STATIC_WEB_SERVER_VERSION**  
-  *Description:* The version of the static web server image used by the **[Static Web Server](https://static-web-server.net/configuration/config-file/)**.  
-  *Default:* `2.36.0`  
-  *Example:*  
-  ```env
-  STATIC_WEB_SERVER_VERSION=2.36.0
-  ```
-
-- **TRAEFIK_VERSION**  
-  *Description:* The version of the **[Traefik](https://doc.traefik.io/traefik/)** image to deploy.  
-  *Default:* `3.3.3`  
-  *Example:*  
-  ```env
-  TRAEFIK_VERSION=3.3.3
-  ```
-
 ## Usage
 
 1. **Create a `.env` file**  
@@ -131,8 +115,6 @@ The deployment is driven by a compose file that utilizes several environment var
    HOSTNAME=proxy.example.com
    SSL_LABS_IPV4_CIDR=64.41.200.0/24
    SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
-   STATIC_WEB_SERVER_VERSION=2.36.0
-   TRAEFIK_VERSION=3.3.3
    ```
 
 2. **Deploy with Compose**  

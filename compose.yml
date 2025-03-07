@@ -177,7 +177,7 @@ services:
           memory: 8M
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/health"]
-    image: joseluisq/static-web-server:${STATIC_WEB_SERVER_VERSION:-2.36.0}-alpine
+    image: joseluisq/static-web-server:2.36.0-alpine
     labels:
       - traefik.enable=true
       - traefik.http.routers.securityFile.rule=Path("/.well-known/security.txt")
@@ -202,7 +202,7 @@ services:
     healthcheck:
       # @BUG: For some reason `traefik healthcheck` does not pass health checks with manual routing
       test: ["CMD", "wget", "--spider", "-q", "https://${HOSTNAME:?}/traefik/ping"]
-    image: traefik:${TRAEFIK_VERSION:-3.3.3}
+    image: traefik:3.3.3
     ports:
       - 80:80
       - 443:443
