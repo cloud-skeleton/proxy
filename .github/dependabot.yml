@@ -8,6 +8,5 @@ updates:
     schedule:
       interval: daily
       time: "00:00"
-    target-branch: dependabot
 
 version: 2
