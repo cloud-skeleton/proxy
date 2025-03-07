@@ -5,18 +5,18 @@
 [![Security.txt ✓](https://img.shields.io/badge/Security.txt-%E2%9C%93-yellow)]()
 [![Max_RAM-56M](https://img.shields.io/badge/Max_RAM-56M-violet)]()
 
-# Cloud Skeleton ► Container Proxy 🚀
+# **[Cloud Skeleton](https://github.com/cloud-skeleton/)** ► **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)** 🚀
 
-> This repository contains the configuration and deployment files for the Cloud Skeleton Container Proxy. It leverages **[Traefik](https://doc.traefik.io/traefik/)** as a secure reverse proxy to manage and route traffic in cloud-native environments, and includes a lightweight server that serves a signed `security.txt` file along with a public GPG key (`info@cloudskeleton.eu.public.asc`) used for signature verification. This server is the **[Static Web Server](https://static-web-server.net/configuration/config-file/)**.
+> This repository contains the configuration and deployment files for the **[Cloud Skeleton](https://github.com/cloud-skeleton/)** **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)**. It leverages **[Traefik](https://doc.traefik.io/traefik/)** as a secure reverse proxy to manage and route traffic in cloud-native environments, and includes a lightweight server that serves a signed `security.txt` file along with a public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) used for signature verification. This server is the **[Static Web Server](https://static-web-server.net/configuration/config-file/)**.
 
 ## Overview
 
-The Container Proxy project provides a robust reverse proxy setup using **[Traefik](https://doc.traefik.io/traefik/)** to:
+The **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)** project provides a robust reverse proxy setup using **[Traefik](https://doc.traefik.io/traefik/)** to:
 - Manage incoming HTTP/HTTPS traffic.
 - Securely route requests to backend services.
-- Automate TLS certificate management via Let's Encrypt.
+- Automate TLS certificate management via **[Let's Encrypt](https://letsencrypt.org/getting-started/)**.
 - Serve a regularly updated `security.txt` file for transparency and secure communication.
-- Deliver an A+ SSL configuration as verified by SSL Labs.
+- Deliver an A+ SSL configuration as verified by **[SSL Labs](https://www.ssllabs.com/ssltest/)**.
 
 ![SSL Labs Rating A+](./assets/ssllabs-rating.jpg)
 
@@ -30,7 +30,7 @@ The primary configuration is defined in the `compose.yml` file, which sets up tw
   The `security.txt` file is automatically rotated every month. It is updated with new expiration dates and other dynamic information. To ensure the system always serves the latest version, it is recommended to automate a `git pull` followed by a `docker compose restart` (or a similar solution) on a monthly basis.
 
 - **Signature Verification:**  
-  The `security.txt` file is PGP-signed to guarantee its authenticity. Alongside this file, the repository provides the public GPG key (`info@cloudskeleton.eu.public.asc`). Use this key to verify the signature of `security.txt` and ensure that it has not been tampered with.
+  The `security.txt` file is **[GPG](https://www.gnupg.org/gph/en/manual.html)**-signed to guarantee its authenticity. Alongside this file, the repository provides the public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`). Use this key to verify the signature of `security.txt` and ensure that it has not been tampered with.
 
 Example `security.txt` content:
 ```
@@ -66,14 +66,14 @@ The deployment is driven by a compose file that utilizes several environment var
   ```
 
 - **CERTIFICATE_EMAIL**  
-  *Description:* The email address used for Let's Encrypt certificate registration.  
+  *Description:* The email address used for **[Let's Encrypt](https://letsencrypt.org/getting-started/)** certificate registration.  
   *Example:*  
   ```env
   CERTIFICATE_EMAIL=admin@example.com
   ```
 
 - **DOCKER_SOCKET**  
-  *Description:* The path to the Docker socket. Useful if running on a host with a non-standard socket path.  
+  *Description:* The path to the **[Docker](https://docs.docker.com/get-started/)** socket. Useful if running on a host with a non-standard socket path.  
   *Default:* `/var/run/docker.sock`  
   *Example:*  
   ```env
@@ -81,7 +81,7 @@ The deployment is driven by a compose file that utilizes several environment var
   ```
 
 - **SSL_LABS_IPV4_CIDR**  
-  *Description:* The IPv4 CIDR block used for SSL Labs certificate validation.  
+  *Description:* The IPv4 CIDR block used for **[SSL Labs](https://www.ssllabs.com/ssltest/)** certificate validation.  
   *Default:* `64.41.200.0/24`  
   *Example:*  
   ```env
@@ -89,7 +89,7 @@ The deployment is driven by a compose file that utilizes several environment var
   ```
 
 - **SSL_LABS_IPV6_CIDR**  
-  *Description:* The IPv6 CIDR block used for SSL Labs certificate validation.  
+  *Description:* The IPv6 CIDR block used for **[SSL Labs](https://www.ssllabs.com/ssltest/)** certificate validation.  
   *Default:* `2600:c02:1020:4202::/64`  
   *Example:*  
   ```env
@@ -99,59 +99,24 @@ The deployment is driven by a compose file that utilizes several environment var
 ## Usage
 
 1. **Create a `.env` file**  
-   Place a `.env` file in the repository root with the required variables. For example:
+   Place a `.env` file in the repository root with the required variables. 
 
-   ```env
-   ADMIN_IP=203.0.113.42
-   CERTIFICATE_EMAIL=admin@example.com
-   DOCKER_SOCKET=/var/run/docker.sock
-   SSL_LABS_IPV4_CIDR=64.41.200.0/24
-   SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
-   ```
-
-2. **Deploy with Compose**  
-   Run the following command to start the services:
-
+2. **Deploy with [Docker Compose](https://docs.docker.com/compose/gettingstarted/)**  
    ```sh
    docker compose up -d
    ```
 
 3. **Automate Updates**  
-   To ensure the latest `security.txt` is always served, set up an automated job (e.g., via cron or CI/CD) to:
    - Pull the latest changes with `git pull`.
    - Restart the services using `docker compose restart`.
 
 4. **Verify the Security File**  
-   Use the provided public GPG key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt` and ensure its integrity.
+   Use the provided public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt`.
 
 ## External Integration & DNS Setup
 
-- **Integration with Other Compose Files:**  
-  It is expected that users may run other compose files on the same machine. For these setups:
-  - Create an external network named `proxy_bridge` and attach your services to this network.
-  - **Do not expose ports directly in your service definitions; only the **[Traefik](https://doc.traefik.io/traefik/)** service should expose ports.**
-  - Control service exposure using simple **[Traefik](https://doc.traefik.io/traefik/)** labels. For example, in your own `compose.yml`:
-
-  ```yaml
-  networks:
-    proxy_bridge:
-      external: true
-
-  services:
-    my-service:
-      image: my-service-image
-      networks:
-        - proxy_bridge
-      labels:
-        - traefik.enable=true
-        - traefik.http.routers.custom-router.rule=Host("www.domain.com")
-  ```
-
-- **DNS Configuration:**  
-  Before using the reverse proxy, ensure that you set up the required DNS A record pointing your domain (e.g., `proxy.example.com`) to the IP address of the host running the Container Proxy. This is essential for proper routing of external traffic.
-
-- **Traefik Dashboard Access:**  
-  The **[Traefik](https://doc.traefik.io/traefik/)** dashboard is accessible at the `/traefik` endpoint but only from the IP address specified in the `ADMIN_IP` variable. Ensure that your DNS and firewall settings restrict access accordingly.
+- **[Traefik](https://doc.traefik.io/traefik/) Dashboard Access:**  
+  The **[Traefik](https://doc.traefik.io/traefik/)** dashboard is accessible at the `/traefik` endpoint but only from the IP address specified in the `ADMIN_IP` variable.
 
 ## Contributing
 
@@ -166,4 +131,4 @@ This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ---
 
-*This repository is maintained exclusively by the Cloud Skeleton project.*
+*This repository is maintained exclusively by the **[Cloud Skeleton](https://github.com/cloud-skeleton/)** project.*
