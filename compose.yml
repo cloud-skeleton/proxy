@@ -107,7 +107,7 @@ configs:
 
         middlewares:
           admin-ip-only:
-            ipWhiteList:
+            IPAllowList:
               sourceRange:
                 - ${ADMIN_IP:?}/32
 
