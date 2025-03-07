@@ -5,6 +5,11 @@ x-podman:
 
 x-templates:
   service: &service
+    healthcheck: &service-healthcheck
+      interval: 10s
+      start_interval: 2s
+      start_period: 10s
+      timeout: 3s
     mem_swappiness: 0
     networks:
       - bridge
@@ -50,7 +55,7 @@ configs:
           http:
             encodeQuerySemicolons: true
             middlewares:
-              - securityHeaders@file
+              - security-headers@file
             tls:
               certResolver: letsencrypt
           http3: {}
@@ -63,8 +68,7 @@ configs:
       global:
         sendAnonymousUsage: false
       ping:
-        entryPoint: https
-        manualRouting: true
+        entryPoint: http
       providers:
         docker:
           exposedByDefault: false
@@ -79,43 +83,31 @@ configs:
       ---
       http:
         routers:
-          sslLabsCertificateValidation:
+          ssl-labs-certificate-validation:
             middlewares:
-              - successResponse
+              - success-response
             rule: ClientIP("${SSL_LABS_IPV4_CIDR:-64.41.200.0/24}") || ClientIP("${SSL_LABS_IPV6_CIDR:-2600:c02:1020:4202::/64}")
             service: noop@internal
 
-          traefikDashboard:
+          traefik-dashboard:
             middlewares:
-              - adminIpOnly
+              - admin-ip-only
             rule: PathPrefix("/traefik/api/") || PathPrefix("/traefik/dashboard/")
             service: api@internal
 
-          traefikDashboardRedirect:
+          traefik-dashboard-redirect:
             middlewares:
-              - traefikDashboardRedirect
+              - traefik-dashboard-redirect
             rule: Path("/traefik") || Path("/traefik/")
             service: noop@internal
 
-          traefikPing:
-            middlewares:
-              - localhostIpOnly
-            rule: Path("/traefik/ping")
-            service: ping@internal
-
         middlewares:
-          adminIpOnly:
+          admin-ip-only:
             ipWhiteList:
               sourceRange:
                 - ${ADMIN_IP:?}/32
 
-          localhostIpOnly:
-            ipWhiteList:
-              sourceRange:
-                - 127.0.0.0/8
-                - ::1/128
-
-          securityHeaders:
+          security-headers:
             headers:
               browserXssFilter: true
               contentTypeNosniff: true
@@ -125,13 +117,13 @@ configs:
               stsPreload: true
               stsSeconds: 31536000
 
-          successResponse:
+          success-response:
             plugin:
               staticResponse:
                 fallback:
                   statusCode: 200
 
-          traefikDashboardRedirect:
+          traefik-dashboard-redirect:
             redirectRegex:
               regex: "^(.+)/traefik/?$"
               replacement: "$${1}/traefik/dashboard/"
@@ -176,11 +168,17 @@ services:
         limits:
           memory: 8M
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/health"]
+      <<: *service-healthcheck
+      test:
+        - CMD
+        - wget
+        - --spider
+        - -q
+        - http://127.0.0.1/health
     image: joseluisq/static-web-server:2.36.0-alpine
     labels:
       - traefik.enable=true
-      - traefik.http.routers.securityFile.rule=Path("/.well-known/security.txt")
+      - traefik.http.routers.security-file.rule=Path("/.well-known/security.txt")
     volumes:
       - ./security/security.txt:/public/.well-known/security.txt:ro
 
@@ -197,11 +195,12 @@ services:
       resources:
         limits:
           memory: 48M
-    extra_hosts:
-      - ${HOSTNAME:?}:127.0.0.1
     healthcheck:
-      # @BUG: For some reason `traefik healthcheck` does not pass health checks with manual routing
-      test: ["CMD", "wget", "--spider", "-q", "https://${HOSTNAME:?}/traefik/ping"]
+      <<: *service-healthcheck
+      test:
+        - CMD
+        - traefik
+        - healthcheck
     image: traefik:3.3.4
     ports:
       - 80:80
