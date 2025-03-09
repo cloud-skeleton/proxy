@@ -68,6 +68,7 @@ configs:
             moduleName: github.com/tuxgal/traefik_inline_response
             version: v0.1.2
       global:
+        checkNewVersion: false
         sendAnonymousUsage: false
       log:
         level: INFO
