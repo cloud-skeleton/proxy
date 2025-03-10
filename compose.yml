@@ -73,7 +73,6 @@ configs:
       log:
         level: INFO
       ping:
-        entryPoint: http
         manualRouting: true
       providers:
         docker:
@@ -213,6 +212,8 @@ services:
       resources:
         limits:
           memory: 48M
+    extra_hosts:
+      - ${HOSTNAME:?}:127.0.0.1
     healthcheck:
       <<: *service-healthcheck
       test:
@@ -220,7 +221,7 @@ services:
         - wget
         - --spider
         - -q
-        - http://127.0.0.1/traefik/ping
+        - https://${HOSTNAME:?}/traefik/ping
     image: traefik:3.3.4
     ports:
       - 80:80
