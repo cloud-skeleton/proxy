@@ -216,7 +216,7 @@ services:
       - ${HOSTNAME:?}:127.0.0.1
     healthcheck:
       <<: *service-healthcheck
-      # Leaving this as workaround until https://github.com/traefik/traefik/issues/11593 is fixed
+      # @TODO: Leaving this as workaround until https://github.com/traefik/traefik/issues/11593 is fixed
       test:
         - CMD
         - wget
