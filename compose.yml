@@ -73,7 +73,7 @@ configs:
       log:
         level: INFO
       ping:
-        entryPoint: http
+        manualRouting: true
       providers:
         docker:
           exposedByDefault: false
@@ -106,11 +106,23 @@ configs:
             rule: Path("/traefik") || Path("/traefik/")
             service: noop@internal
 
+          traefik-ping:
+            middlewares:
+              - local-ip-only
+            rule: PathPrefix("/traefik/ping")
+            service: ping@internal
+
         middlewares:
           admin-ip-only:
             IPAllowList:
               sourceRange:
                 - ${ADMIN_IP:?}/32
+
+          local-ip-only:
+            IPAllowList:
+              sourceRange:
+                - 127.0.0.0/8
+                - ::1/128
 
           security-headers:
             headers:
@@ -204,8 +216,10 @@ services:
       <<: *service-healthcheck
       test:
         - CMD
-        - traefik
-        - healthcheck
+        - wget
+        - --spider
+        - -q
+        - http://127.0.0.1/traefik/ping
     image: traefik:3.3.4
     ports:
       - 80:80
