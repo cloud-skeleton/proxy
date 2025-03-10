@@ -73,7 +73,7 @@ configs:
       log:
         level: INFO
       ping:
-        entryPoint: https
+        entryPoint: http
         manualRouting: true
       providers:
         docker:
