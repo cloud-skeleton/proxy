@@ -20,6 +20,8 @@ The **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)** pr
 
 ![SSL Labs Rating A+](./assets/ssllabs-rating.jpg)
 
+> **IMPORTANT:** Before deploying the **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)**, **you must complete all the prerequisites detailed in the [Prerequisites](https://github.com/cloud-skeleton/prerequisites) repository.** This step is essential to ensure that your system meets all the required configurations, dependencies, and security measures necessary for a successful deployment.
+
 The primary configuration is defined in the `compose.yml` file, which sets up two main services:
 - **[Traefik](https://doc.traefik.io/traefik/):** The reverse proxy service.
 - **[Static Web Server](https://static-web-server.net/configuration/config-file/):** A server that serves the `security.txt` file at `/.well-known/security.txt`.
@@ -165,7 +167,7 @@ The deployment is driven by a compose file that utilizes several environment var
 
 Contributions are welcome!  
 - Fork the repository.
-- Create a new branch (e.g., `feature/my-improvement`).
+- Create a new branch (e.g., **`feature/my-improvement`**).
 - Submit a pull request with your changes.
 
 ## License
