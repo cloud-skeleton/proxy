@@ -176,4 +176,4 @@ This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ---
 
-*This repository is maintained exclusively by the **[Cloud Skeleton](https://github.com/cloud-skeleton/)** project.*
+*This repository is maintained exclusively by the **[Cloud Skeleton](https://github.com/cloud-skeleton/)** project, and it was developed by EU citizens who are strong proponents of the European Federation. 🇪🇺*
