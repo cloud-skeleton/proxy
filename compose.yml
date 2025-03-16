@@ -120,7 +120,7 @@ configs:
           admin-ip-only:
             IPAllowList:
               sourceRange:
-                - ${ADMIN_IP:?}/32
+                - ${ADMIN_ALLOW_IP_CIDR:?}
 
           local-ip-only:
             IPAllowList:

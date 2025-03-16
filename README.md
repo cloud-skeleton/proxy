@@ -60,11 +60,11 @@ The deployment is driven by a compose file that utilizes several environment var
 
 ### Environment Variables
 
-- **ADMIN_IP**  
-  *Description:* The IP address permitted to access the **[Traefik](https://doc.traefik.io/traefik/)** dashboard.  
+- **ADMIN_ALLOW_IP_CIDR**  
+  *Description:* The IP CIDR allowed to access the **[Traefik](https://doc.traefik.io/traefik/)** dashboard.  
   *Example:*  
   ```env
-  ADMIN_IP=203.0.113.42
+  ADMIN_ALLOW_IP_CIDR=203.0.113.42/32
   ```
 
 - **CERTIFICATE_EMAIL**  
@@ -107,31 +107,43 @@ The deployment is driven by a compose file that utilizes several environment var
 
 ## Usage
 
-1. **Create a `.env` file**  
-   Place a `.env` file in the repository root with the required variables. 
+1. **Open Required Ports:**  
+   Before cloning the repository, ensure that your firewall allows traffic on ports 80 and 443:
+    ```sh
+    sudo ufw route allow proto tcp from any to any port 80
+    sudo ufw route allow proto tcp from any to any port 443
+    ```
 
-   ```env
-   ADMIN_IP=203.0.113.42
-   CERTIFICATE_EMAIL=admin@example.com
-   DOCKER_SOCKET=/var/run/docker.sock
-   HOSTNAME=proxy.example.com
-   SSL_LABS_IPV4_CIDR=64.41.200.0/24
-   SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
-   ```
+2. **Clone the Repository:**  
+   Clone the **Container Proxy** repository and navigate into its directory:
+    ```sh
+    git clone https://github.com/cloud-skeleton/container-proxy.git
+    cd container-proxy
+    ```
 
-2. **Deploy with [Docker Compose](https://docs.docker.com/compose/gettingstarted/)**  
+3. **Create a `.env` File:**  
+   Place a `.env` file in the repository root with the required variables:
+    ```env
+    ADMIN_ALLOW_IP_CIDR=203.0.113.42/32
+    CERTIFICATE_EMAIL=admin@example.com
+    DOCKER_SOCKET=/var/run/docker.sock
+    HOSTNAME=proxy.example.com
+    SSL_LABS_IPV4_CIDR=64.41.200.0/24
+    SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
+    ```
+
+4. **Deploy with [Docker Compose](https://docs.docker.com/compose/gettingstarted/):**  
    Run the following command to start the services:
+    ```sh
+    docker compose up -d
+    ```
 
-   ```sh
-   docker compose up -d
-   ```
-
-3. **Automate Updates**  
+5. **Automate Updates:**  
    To ensure the latest `security.txt` is always served, set up an automated job (e.g., via cron or CI/CD) to:
    - Pull the latest changes with `git pull`.
    - Restart the services using `docker compose restart`.
 
-4. **Verify the Security File**  
+6. **Verify the Security File:**  
    Use the provided public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt`.
 
 ## External Integration & DNS Setup
@@ -161,7 +173,7 @@ The deployment is driven by a compose file that utilizes several environment var
   Before using the reverse proxy, ensure that you set up the required DNS A record pointing your domain (e.g., `proxy.example.com`) to the IP address of the host running the **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)**. This is essential for proper routing of external traffic.
 
 - **[Traefik](https://doc.traefik.io/traefik/) Dashboard Access:**  
-  The **[Traefik](https://doc.traefik.io/traefik/)** dashboard is accessible at the `/traefik` endpoint but only from the IP address specified in the `ADMIN_IP` variable.
+  The **[Traefik](https://doc.traefik.io/traefik/)** dashboard is accessible at the `/traefik` endpoint but only from the IP range specified in the `ADMIN_ALLOW_IP_CIDR` variable.
 
 ## Contributing
 
