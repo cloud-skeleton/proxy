@@ -139,9 +139,16 @@ The deployment is driven by a compose file that utilizes several environment var
     ```
 
 5. **Automate Updates:**  
-   To ensure the latest `security.txt` is always served, set up an automated job (e.g., via cron or CI/CD) to:
-   - Pull the latest changes with `git pull`.
-   - Restart the services using `docker compose restart`.
+   To ensure the latest `security.txt` is always served, set up a cron job that automatically performs a `git pull` in the current repository on the first day of every month at 06:00 UTC. You can create the cron job by running the following shell command as root:
+
+   ```sh
+   cat << EOF | sudo tee /etc/cron.d/container-proxy-update > /dev/null
+   0 6 1 * * ${USER} git -C "$(pwd)" pull
+   EOF
+   ```
+
+   This command creates a cron file at `/etc/cron.d/container-proxy-update` that will run the `git pull` command in the current directory (as determined by `$(pwd)`) at the specified time.
+
 
 6. **Verify the Security File:**  
    Use the provided public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt`.
