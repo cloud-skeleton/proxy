@@ -150,6 +150,10 @@ configs:
               replacement: "$${1}/traefik/dashboard/"
               permanent: true
 
+        serversTransports:
+          self-signed:
+            insecureSkipVerify: true
+
       tls:
         options:
           default:
