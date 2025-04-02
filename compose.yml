@@ -202,7 +202,7 @@ services:
         - --spider
         - -q
         - http://127.0.0.1/health
-    image: joseluisq/static-web-server:2.36.0-alpine
+    image: joseluisq/static-web-server:2.36.1-alpine
     labels:
       - traefik.enable=true
       - traefik.http.routers.security-file.priority=1000
