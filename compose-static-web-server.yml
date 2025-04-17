@@ -36,7 +36,7 @@ services:
       - traefik.http.routers.security-file.priority=1000
       - traefik.http.routers.security-file.rule=Host("${HOSTNAME:?}") && Path("/.well-known/security.txt")
     networks:
-      - proxy
+      - bridge
     volumes:
       - ./security/security.txt:/public/.well-known/security.txt:ro
 ...

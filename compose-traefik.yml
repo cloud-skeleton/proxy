@@ -175,7 +175,7 @@ services:
         - https://${HOSTNAME:?}/traefik/ping
     image: traefik:3.3.5
     networks:
-      proxy:
+      bridge:
         aliases:
           - ${HOSTNAME:?}
     ports:
