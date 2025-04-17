@@ -1,0 +1,187 @@
+---
+configs:
+  traefik_dynamic:
+    content: |
+      ---
+      http:
+        routers:
+          ssllabsCertificateValidation:
+            middlewares:
+              - successResponse
+            priority: 1000
+            rule: >
+              Host("${HOSTNAME:?}") &&
+              (ClientIP("${SSL_LABS_IPV4_CIDR:-64.41.200.0/24}") || ClientIP("${SSL_LABS_IPV6_CIDR:-2600:c02:1020:4202::/64}"))
+            service: noop@internal
+
+          traefikDashboard:
+            middlewares:
+              - adminIpOnly
+            priority: 1000
+            rule: >
+              Host("${HOSTNAME:?}") &&
+              (PathPrefix("/traefik/api/") || PathPrefix("/traefik/dashboard/"))
+            service: api@internal
+
+          traefikDashboardRedirect:
+            middlewares:
+              - traefikDashboardRedirect
+            priority: 1000
+            rule: Host("${HOSTNAME:?}") && PathRegexp("^/traefik/?$")
+            service: noop@internal
+
+          traefikPing:
+            middlewares:
+              - localIpOnly
+            priority: 1000
+            rule: Host("${HOSTNAME:?}") && Path("/traefik/ping")
+            service: ping@internal
+
+        middlewares:
+          adminIpOnly:
+            IPAllowList:
+              sourceRange:
+                - ${ADMIN_ALLOW_IP_CIDR:?}
+
+          localIpOnly:
+            IPAllowList:
+              sourceRange:
+                - 127.0.0.0/8
+                - ::1/128
+
+          securityHeaders:
+            headers:
+              browserXssFilter: true
+              contentTypeNosniff: true
+              forceStsHeader: true
+              frameDeny: true
+              stsIncludeSubdomains: true
+              stsPreload: true
+              stsSeconds: 31536000
+
+          successResponse:
+            plugin:
+              staticResponse:
+                fallback:
+                  statusCode: 200
+
+          traefikDashboardRedirect:
+            redirectRegex:
+              regex: "^(.+)/traefik/?$"
+              replacement: "$${1}/traefik/dashboard/"
+              permanent: true
+
+        serversTransports:
+          selfSigned:
+            insecureSkipVerify: true
+
+      tls:
+        options:
+          default:
+            minVersion: VersionTLS12
+            cipherSuites:
+              - TLS_AES_256_GCM_SHA384
+              - TLS_CHACHA20_POLY1305_SHA256
+              - TLS_AES_128_GCM_SHA256
+              - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+              - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+              - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+            curvePreferences:
+              - secp521r1
+              - secp384r1
+              - x25519
+              - secp256r1
+            sniStrict: true
+      ...
+
+  traefik_static:
+    content: |
+      ---
+      api:
+        basePath: /traefik/
+      certificatesResolvers:
+        letsencrypt:
+          acme:
+            email: ${CERTIFICATE_EMAIL:?}
+            keyType: EC384
+            tlsChallenge: true
+            storage: /certificates/acme.json
+      entrypoints:
+        http:
+          address: :80
+          http:
+            encodeQuerySemicolons: true
+            redirections:
+              entryPoint:
+                permanent: true
+                to: https
+          http3: {}
+          reusePort: true
+        https:
+          address: :443
+          asDefault: true
+          http:
+            encodeQuerySemicolons: true
+            middlewares:
+              - securityHeaders@file
+            tls:
+              certResolver: letsencrypt
+          http3: {}
+          reusePort: true
+      experimental:
+        plugins:
+          staticResponse:
+            moduleName: github.com/tuxgal/traefik_inline_response
+            version: v0.1.2
+      global:
+        checkNewVersion: false
+        sendAnonymousUsage: false
+      log:
+        level: INFO
+      ping:
+        manualRouting: true
+      providers:
+        docker:
+          exposedByDefault: false
+          network: proxy_bridge
+          watch: true
+        file:
+          filename: /etc/traefik/dynamic.yml
+      ...
+
+services:
+  traefik:
+    configs:
+      - mode: 0440
+        source: traefik_static
+        target: /etc/traefik/traefik.yml
+      - mode: 0440
+        source: traefik_dynamic
+        target: /etc/traefik/dynamic.yml
+    deploy:
+      resources:
+        limits:
+          memory: 48M
+    extends:
+      file: compose.templates.yml
+      service: service
+    healthcheck:
+      # @TODO: Leaving this as workaround until https://github.com/traefik/traefik/issues/11593 is fixed
+      test:
+        - CMD
+        - wget
+        - --spider
+        - -q
+        - https://${HOSTNAME:?}/traefik/ping
+    image: traefik:3.3.5
+    networks:
+      proxy:
+        aliases:
+          - ${HOSTNAME:?}
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock:ro
+      - ./state/traefik/certificates:/certificates
+...
