@@ -74,6 +74,13 @@ The deployment is driven by a compose file that utilizes several environment var
   CERTIFICATE_EMAIL=admin@example.com
   ```
 
+- **DNS_PROVIDER**  
+  *Description:* The DNS provider used by **[Traefik](https://doc.traefik.io/traefik/)** for solving **[Let's Encrypt DNS-01](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge)** challenges. Must match a supported **[Lego DNS provider code](https://go-acme.github.io/lego/dns/index.html)**.  
+  *Example:*  
+  ```env
+  DNS_PROVIDER=ovh
+  ```
+
 - **DOCKER_SOCKET**  
   *Description:* The path to the **[Docker](https://docs.docker.com/get-started/)** socket. Useful if running on a host with a non-standard socket path.  
   *Default:* `/var/run/docker.sock`  
@@ -158,6 +165,7 @@ The deployment is driven by a compose file that utilizes several environment var
     ```env
     ADMIN_ALLOW_IP_CIDR=203.0.113.42/32
     CERTIFICATE_EMAIL=admin@example.com
+    DNS_PROVIDER=ovh
     DOCKER_SOCKET=/var/run/docker.sock
     HOSTNAME=proxy.example.com
     PROXY_NETWORK_IPV4_CIDR=10.0.0.0/24
