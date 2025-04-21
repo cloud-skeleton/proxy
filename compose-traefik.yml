@@ -86,7 +86,8 @@ configs:
   traefik_static:
     content: |
       ---
-      api: {}
+      api:
+        basePath: /
       certificatesResolvers:
         letsencrypt:
           acme:
