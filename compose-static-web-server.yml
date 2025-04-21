@@ -29,7 +29,7 @@ services:
         - wget
         - --spider
         - -q
-        - http://127.0.0.1/health
+        - https://${HOSTNAME:?}/.well-known/security.txt
     image: joseluisq/static-web-server:2.36.1-alpine
     labels:
       - traefik.enable=true
