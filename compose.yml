@@ -234,7 +234,7 @@ services:
         - --spider
         - -q
         - https://${HOSTNAME:?}/traefik/ping
-    image: traefik:3.3.5
+    image: traefik:3.3.6
     ports:
       - 80:80
       - 443:443
