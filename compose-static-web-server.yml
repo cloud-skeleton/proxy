@@ -1,0 +1,42 @@
+---
+configs:
+  security_file_server:
+    content: |
+      [general]
+      compression-level = "best"
+      health = true
+      log-level = "warn"
+
+services:
+  security_file_server:
+    configs:
+      - mode: 0440
+        source: security_file_server
+        target: /config.toml
+    depends_on:
+      traefik:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 8M
+    extends:
+      file: compose.templates.yml
+      service: service
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --spider
+        - -q
+        - http://127.0.0.1/health
+    image: joseluisq/static-web-server:2.36.1-alpine
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.security-file.priority=1000
+      - traefik.http.routers.security-file.rule=Path("/.well-known/security.txt")
+    networks:
+      - bridge
+    volumes:
+      - ./security/security.txt:/public/.well-known/security.txt:ro
+...

@@ -3,7 +3,7 @@ Hash: SHA512
 
 Contact: https://github.com/orgs/cloud-skeleton/discussions
 Expires: 2025-05-01T00:00:00.000Z
-Encryption: https://raw.githubusercontent.com/cloud-skeleton/container-proxy/refs/heads/main/security/info@cloudskeleton.eu.public.asc
+Encryption: https://raw.githubusercontent.com/cloud-skeleton/proxy/refs/heads/main/security/info@cloudskeleton.eu.public.asc
 Preferred-Languages: en, lt
 -----BEGIN PGP SIGNATURE-----
 
