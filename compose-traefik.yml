@@ -164,7 +164,7 @@ services:
       resources:
         limits:
           memory: 48M
-    env_file: .dns.env # Configure DNS provider with environment variables from https://go-acme.github.io/lego/dns/index.html
+    env_file: .dns.env
     extends:
       file: compose.templates.yml
       service: service
