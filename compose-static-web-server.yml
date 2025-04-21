@@ -34,7 +34,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.security-file.priority=1000
-      - traefik.http.routers.security-file.rule=HostRegexp(`{host:.+}`) && Path("/.well-known/security.txt")
+      - traefik.http.routers.security-file.rule=Path("/.well-known/security.txt")
     networks:
       - bridge
     volumes:
