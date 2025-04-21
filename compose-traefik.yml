@@ -48,6 +48,8 @@ configs:
               sourceRange:
                 - 127.0.0.0/8
                 - ::1/128
+                - ${TRAEFIK_PRIVATE_IPV4:-10.0.0.2}
+                - ${TRAEFIK_PRIVATE_IPV6:-fd00::a00:2}
 
           securityHeaders:
             headers:
@@ -178,6 +180,8 @@ services:
       bridge:
         aliases:
           - ${HOSTNAME:?}
+        ipv4_address: ${TRAEFIK_PRIVATE_IPV4:-10.0.0.2}
+        ipv6_address: ${TRAEFIK_PRIVATE_IPV6:-fd00::a00:2}
     ports:
       - 80:80
       - 443:443

@@ -7,6 +7,11 @@ name: proxy
 
 networks:
   bridge:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: ${TRAEFIK_NETWORK_IPV4_CIDR:-10.0.0.0/24}
+        - subnet: ${TRAEFIK_NETWORK_IPV6_CIDR:-fd00::/64}
 
 x-podman:
   in_pod: false
