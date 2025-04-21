@@ -219,7 +219,7 @@ The deployment is driven by a compose file that utilizes several environment var
   Before using the reverse proxy, ensure that you set up the required DNS A record pointing your domain (e.g., `proxy.example.com`) to the IP address of the host running the **[Proxy](https://github.com/cloud-skeleton/proxy/)**. This is essential for proper routing of external traffic.
 
 - **[Traefik](https://doc.traefik.io/traefik/) Dashboard Access:**  
-  The **[Traefik](https://doc.traefik.io/traefik/)** dashboard is accessible at the `/traefik` endpoint but only from the IP range specified in the `ADMIN_ALLOW_IP_CIDR` variable.
+  The **[Traefik](https://doc.traefik.io/traefik/)** dashboard is accessible at the `/` and `/dashboard/` endpoints but only from the IP range specified in the `ADMIN_ALLOW_IP_CIDR` variable.
 
 ## Contributing
 
