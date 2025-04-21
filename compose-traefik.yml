@@ -101,7 +101,7 @@ configs:
       ---
       api: {}
       certificatesResolvers:
-        letsencrypt:
+        lets-encrypt:
           acme:
             email: ${CERTIFICATE_EMAIL:?}
             keyType: EC384
@@ -126,7 +126,7 @@ configs:
             middlewares:
               - security-headers@file
             tls:
-              certResolver: letsencrypt
+              certResolver: lets-encrypt
           http3: {}
           reusePort: true
       experimental:
