@@ -5,13 +5,13 @@
 [![Security.txt ✓](https://img.shields.io/badge/Security.txt-%E2%9C%93-yellow)]()
 [![Max_RAM-56M](https://img.shields.io/badge/Max_RAM-56M-violet)]()
 
-# **[Cloud Skeleton](https://github.com/cloud-skeleton/)** ► **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)** 🚀
+# **[Cloud Skeleton](https://github.com/cloud-skeleton/)** ► **[Proxy](https://github.com/cloud-skeleton/proxy/)** 🚀
 
-> This repository contains the configuration and deployment files for the **[Cloud Skeleton](https://github.com/cloud-skeleton/)** **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)**. It leverages **[Traefik](https://doc.traefik.io/traefik/)** as a secure reverse proxy to manage and route traffic in cloud-native environments, and includes a lightweight server that serves a signed `security.txt` file along with a public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) used for signature verification. This server is the **[Static Web Server](https://static-web-server.net/configuration/config-file/)**.
+> This repository contains the configuration and deployment files for the **[Cloud Skeleton](https://github.com/cloud-skeleton/)** **[Proxy](https://github.com/cloud-skeleton/proxy/)**. It leverages **[Traefik](https://doc.traefik.io/traefik/)** as a secure reverse proxy to manage and route traffic in cloud-native environments, and includes a lightweight server that serves a signed `security.txt` file along with a public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) used for signature verification. This server is the **[Static Web Server](https://static-web-server.net/configuration/config-file/)**.
 
 ## Overview
 
-The **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)** project provides a robust reverse proxy setup using **[Traefik](https://doc.traefik.io/traefik/)** to:
+The **[Proxy](https://github.com/cloud-skeleton/proxy/)** project provides a robust reverse proxy setup using **[Traefik](https://doc.traefik.io/traefik/)** to:
 - Manage incoming HTTP/HTTPS traffic.
 - Securely route requests to backend services.
 - Automate TLS certificate management via **[Let's Encrypt](https://letsencrypt.org/getting-started/)**.
@@ -20,7 +20,7 @@ The **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)** pr
 
 ![SSL Labs Rating A+](./assets/ssllabs-rating.jpg)
 
-> **IMPORTANT:** Before deploying the **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)**, **you must complete all the prerequisites detailed in the [Prerequisites](https://github.com/cloud-skeleton/prerequisites) repository.** This step is essential to ensure that your system meets all the required configurations, dependencies, and security measures necessary for a successful deployment.
+> **IMPORTANT:** Before deploying the **[Proxy](https://github.com/cloud-skeleton/proxy/)**, **you must complete all the prerequisites detailed in the [Prerequisites](https://github.com/cloud-skeleton/prerequisites) repository.** This step is essential to ensure that your system meets all the required configurations, dependencies, and security measures necessary for a successful deployment.
 
 The primary configuration is defined in the `compose.yml` file, which sets up two main services:
 - **[Traefik](https://doc.traefik.io/traefik/):** The reverse proxy service.
@@ -41,7 +41,7 @@ Hash: SHA512
 
 Contact: https://github.com/orgs/cloud-skeleton/discussions
 Expires: 2025-04-01T00:00:00.000Z
-Encryption: https://raw.githubusercontent.com/cloud-skeleton/container-proxy/refs/heads/main/security/info@cloudskeleton.eu.public.asc
+Encryption: https://raw.githubusercontent.com/cloud-skeleton/proxy/refs/heads/main/security/info@cloudskeleton.eu.public.asc
 Preferred-Languages: en, lt
 -----BEGIN PGP SIGNATURE-----
 
@@ -147,10 +147,10 @@ The deployment is driven by a compose file that utilizes several environment var
     ```
 
 2. **Clone the Repository:**  
-   Clone the **Container Proxy** repository and navigate into its directory:
+   Clone the **Proxy** repository and navigate into its directory:
     ```sh
-    git clone https://github.com/cloud-skeleton/container-proxy.git
-    cd container-proxy
+    git clone https://github.com/cloud-skeleton/proxy.git
+    cd proxy
     ```
 
 3. **Create a `.env` File:**  
@@ -178,12 +178,12 @@ The deployment is driven by a compose file that utilizes several environment var
    To ensure the latest `security.txt` is always served, set up a cron job that automatically performs a `git pull` in the current repository on the first day of every month at 06:00 UTC. You can create the cron job by running the following shell command as root:
 
    ```sh
-   cat << EOF | sudo tee /etc/cron.d/container-proxy-update > /dev/null
+   cat << EOF | sudo tee /etc/cron.d/proxy-update > /dev/null
    0 6 1 * * ${USER} git -C "$(pwd)" pull
    EOF
    ```
 
-   This command creates a cron file at `/etc/cron.d/container-proxy-update` that will run the `git pull` command in the current directory (as determined by `$(pwd)`) at the specified time.
+   This command creates a cron file at `/etc/cron.d/proxy-update` that will run the `git pull` command in the current directory (as determined by `$(pwd)`) at the specified time.
 
 6. **Verify the Security File:**  
    Use the provided public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt`.
@@ -212,7 +212,7 @@ The deployment is driven by a compose file that utilizes several environment var
   ```
 
 - **DNS Configuration:**  
-  Before using the reverse proxy, ensure that you set up the required DNS A record pointing your domain (e.g., `proxy.example.com`) to the IP address of the host running the **[Container Proxy](https://github.com/cloud-skeleton/container-proxy/)**. This is essential for proper routing of external traffic.
+  Before using the reverse proxy, ensure that you set up the required DNS A record pointing your domain (e.g., `proxy.example.com`) to the IP address of the host running the **[Proxy](https://github.com/cloud-skeleton/proxy/)**. This is essential for proper routing of external traffic.
 
 - **[Traefik](https://doc.traefik.io/traefik/) Dashboard Access:**  
   The **[Traefik](https://doc.traefik.io/traefik/)** dashboard is accessible at the `/traefik` endpoint but only from the IP range specified in the `ADMIN_ALLOW_IP_CIDR` variable.
