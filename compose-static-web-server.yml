@@ -29,14 +29,16 @@ services:
         - wget
         - --spider
         - -q
-        - http://127.0.0.1/health
+        - https://${HOSTNAME:?}/health
     image: joseluisq/static-web-server:2.36.1-alpine
     labels:
       - traefik.enable=true
       - traefik.http.routers.security-file.priority=1000
       - traefik.http.routers.security-file.rule=Path("/.well-known/security.txt")
     networks:
-      - bridge
+      bridge:
+        aliases:
+          - ${HOSTNAME:?}
     volumes:
       - ./security/security.txt:/public/.well-known/security.txt:ro
 ...
