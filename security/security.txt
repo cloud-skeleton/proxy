@@ -7,10 +7,10 @@ Encryption: https://raw.githubusercontent.com/cloud-skeleton/proxy/refs/heads/ma
 Preferred-Languages: en, lt
 -----BEGIN PGP SIGNATURE-----
 
-iMAFARYKAEAiIQVQwlMXgXBfOuac7LvabiLNEJLkDjmf64o1BWUUTLljAwUCZ+0r
-FRYcaW5mb0BjbG91ZHNrZWxldG9uLmV1AAAybAHItA8/pW5rpHw001H2zoGUMrA6
-dMQPfBiqy8B7732atqYq0IqlpuRY+P+q+TZQuvz+WShRMCVcJaeAAcY8X+rUghMA
-bVb5+uQUS/rlxTuo6ifRCy1LLXfen/N4lnjiwghRDxLB+GpooZaOGgt2JJM/5bJm
-NQA=
-=3+wn
+iMAFARYKAEAiIQVQwlMXgXBfOuac7LvabiLNEJLkDjmf64o1BWUUTLljAwUCaAZC
+nBYcaW5mb0BjbG91ZHNrZWxldG9uLmV1AAATEgHHQ5QdIrQ+J9WKM0touUtWgCkx
+S5wjURNLxbaHEnBWJDIwmh/2xf+/VxfTc/4N++oj79TrNdq2K6eAAcdEmECoZwCQ
+5API7LgAKNF0b7zaeyMSAW65CV3Dq++uaEotV2NafiKaFI+MFztJcCnUsWh7RDqL
+PQA=
+=jY7v
 -----END PGP SIGNATURE-----
