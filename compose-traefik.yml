@@ -20,14 +20,21 @@ configs:
             priority: 1000
             rule: >
               Host("${HOSTNAME:?}") &&
-              (PathPrefix("/api/") || PathPrefix("/dashboard/"))
+              (PathPrefix("/traefik/api/") || PathPrefix("/traefik/dashboard/"))
             service: api@internal
+
+          traefikDashboardRedirect:
+            middlewares:
+              - traefikDashboardRedirect
+            priority: 1000
+            rule: Host("${HOSTNAME:?}") && PathRegexp("^/traefik/?$")
+            service: noop@internal
 
           traefikPing:
             middlewares:
               - localIpOnly
             priority: 1000
-            rule: Host("${HOSTNAME:?}") && Path("/ping")
+            rule: Host("${HOSTNAME:?}") && Path("/traefik/ping")
             service: ping@internal
 
         middlewares:
@@ -60,6 +67,12 @@ configs:
                 fallback:
                   statusCode: 200
 
+          traefikDashboardRedirect:
+            redirectRegex:
+              regex: "^(.+)/traefik/?$"
+              replacement: "$${1}/traefik/dashboard/"
+              permanent: true
+
         serversTransports:
           selfSigned:
             insecureSkipVerify: true
@@ -86,6 +99,8 @@ configs:
   traefik_static:
     content: |
       ---
+      api:
+        basePath: /traefik/
       certificatesResolvers:
         letsencrypt:
           acme:
@@ -159,7 +174,7 @@ services:
         - wget
         - --spider
         - -q
-        - https://${HOSTNAME:?}/ping
+        - https://${HOSTNAME:?}/traefik/ping
     image: traefik:3.3.6
     networks:
       bridge:
