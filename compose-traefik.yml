@@ -23,6 +23,13 @@ configs:
               (PathPrefix("/api/") || PathPrefix("/dashboard/"))
             service: api@internal
 
+          traefikDashboardRedirect:
+            middlewares:
+              - traefikDashboardRedirect
+            priority: 1000
+            rule: Host("${HOSTNAME:?}") && Path("/")
+            service: noop@internal
+
           traefikPing:
             middlewares:
               - localIpOnly
@@ -59,6 +66,12 @@ configs:
               staticResponse:
                 fallback:
                   statusCode: 200
+
+          traefikDashboardRedirect:
+            redirectRegex:
+              regex: "^(.+)/?$"
+              replacement: "$${1}/dashboard/"
+              permanent: true
 
         serversTransports:
           selfSigned:
