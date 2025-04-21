@@ -103,9 +103,10 @@ configs:
       certificatesResolvers:
         lets-encrypt:
           acme:
+            dnsChallenge:
+              provider: ${DNS_PROVIDER:?}
             email: ${CERTIFICATE_EMAIL:?}
             keyType: EC384
-            tlsChallenge: true
             storage: /certificates/acme.json
       entrypoints:
         http:
@@ -163,6 +164,7 @@ services:
       resources:
         limits:
           memory: 48M
+    env_file: .dns.env
     extends:
       file: compose.templates.yml
       service: service
