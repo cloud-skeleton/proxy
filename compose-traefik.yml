@@ -86,7 +86,6 @@ configs:
   traefik_static:
     content: |
       ---
-      api: {}
       certificatesResolvers:
         letsencrypt:
           acme:
