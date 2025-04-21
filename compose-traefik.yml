@@ -34,7 +34,7 @@ configs:
             middlewares:
               - localIpOnly
             priority: 1000
-            rule: Host("${HOSTNAME:?}") && Path("/ping")
+            rule: Host("${HOSTNAME:?}") && Path("/traefik/ping")
             service: ping@internal
 
         middlewares:
@@ -174,7 +174,7 @@ services:
         - wget
         - --spider
         - -q
-        - https://${HOSTNAME:?}/ping
+        - https://${HOSTNAME:?}/traefik/ping
     image: traefik:3.3.6
     networks:
       bridge:
