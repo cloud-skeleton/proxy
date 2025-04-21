@@ -212,7 +212,7 @@ The deployment is driven by a compose file that utilizes several environment var
         - proxy_bridge
       labels:
         - traefik.enable=true
-        - traefik.http.routers.customRouter.rule=Host("www.domain.com")
+        - traefik.http.routers.custom-router.rule=Host("www.domain.com")
   ```
 
 - **DNS Configuration:**  

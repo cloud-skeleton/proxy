@@ -5,45 +5,45 @@ configs:
       ---
       http:
         routers:
-          ssllabsCertificateValidation:
+          ssllabs-certificate-validation:
             middlewares:
-              - successResponse
+              - success-response
             priority: 1000
             rule: >
               Host("${HOSTNAME:?}") &&
               (ClientIP("${SSL_LABS_IPV4_CIDR:-64.41.200.0/24}") || ClientIP("${SSL_LABS_IPV6_CIDR:-2600:c02:1020:4202::/64}"))
             service: noop@internal
 
-          traefikDashboard:
+          traefik-dashboard:
             middlewares:
-              - adminIpOnly
+              - admin-ip-only
             priority: 1000
             rule: >
               Host("${HOSTNAME:?}") &&
               (PathPrefix("/api/") || PathPrefix("/dashboard/"))
             service: api@internal
 
-          traefikDashboardRedirect:
+          traefik-dashboard-redirect:
             middlewares:
-              - traefikDashboardRedirect
+              - traefik-dashboard-redirect
             priority: 1000
             rule: Host("${HOSTNAME:?}") && Path("/")
             service: noop@internal
 
-          traefikPing:
+          traefik-ping:
             middlewares:
-              - localIpOnly
+              - local-ip-only
             priority: 1000
             rule: Host("${HOSTNAME:?}") && Path("/ping")
             service: ping@internal
 
         middlewares:
-          adminIpOnly:
+          admin-ip-only:
             IPAllowList:
               sourceRange:
                 - ${ADMIN_ALLOW_IP_CIDR:?}
 
-          localIpOnly:
+          local-ip-only:
             IPAllowList:
               sourceRange:
                 - 127.0.0.0/8
@@ -51,7 +51,7 @@ configs:
                 - ${TRAEFIK_PRIVATE_IPV4:-10.0.0.2}
                 - ${TRAEFIK_PRIVATE_IPV6:-fd00::a00:2}
 
-          securityHeaders:
+          security-headers:
             headers:
               browserXssFilter: true
               contentTypeNosniff: true
@@ -61,20 +61,20 @@ configs:
               stsPreload: true
               stsSeconds: 31536000
 
-          successResponse:
+          success-response:
             plugin:
-              staticResponse:
+              static-response:
                 fallback:
                   statusCode: 200
 
-          traefikDashboardRedirect:
+          traefik-dashboard-redirect:
             redirectRegex:
               regex: "^(.+)/$"
               replacement: "$${1}/dashboard/"
               permanent: true
 
         serversTransports:
-          selfSigned:
+          self-signed:
             insecureSkipVerify: true
 
       tls:
@@ -124,14 +124,14 @@ configs:
           http:
             encodeQuerySemicolons: true
             middlewares:
-              - securityHeaders@file
+              - security-headers@file
             tls:
               certResolver: letsencrypt
           http3: {}
           reusePort: true
       experimental:
         plugins:
-          staticResponse:
+          static-response:
             moduleName: github.com/tuxgal/traefik_inline_response
             version: v0.1.2
       global:

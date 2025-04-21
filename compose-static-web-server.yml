@@ -33,8 +33,8 @@ services:
     image: joseluisq/static-web-server:2.36.1-alpine
     labels:
       - traefik.enable=true
-      - traefik.http.routers.securityFile.priority=1000
-      - traefik.http.routers.securityFile.rule=Path("/.well-known/security.txt")
+      - traefik.http.routers.security-file.priority=1000
+      - traefik.http.routers.security-file.rule=Path("/.well-known/security.txt")
     networks:
       - bridge
     volumes:
