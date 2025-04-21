@@ -144,6 +144,20 @@ The deployment is driven by a compose file that utilizes several environment var
   TRAEFIK_PRIVATE_IPV6=fd00::a00:2
   ```
 
+### DNS Provider Credentials (`.dns.env`)
+
+Create a file named `.dns.env` in the repository root. It must define the required environment variables for the **[Lego DNS provider code](https://go-acme.github.io/lego/dns/index.html)** specified by the `DNS_PROVIDER` variable.
+
+#### Example for OVH:
+```env
+OVH_ENDPOINT=ovh-eu
+OVH_APPLICATION_KEY=your_key
+OVH_APPLICATION_SECRET=your_secret
+OVH_CONSUMER_KEY=your_consumer_key
+```
+
+Refer to the [Lego DNS documentation](https://go-acme.github.io/lego/dns/index.html) for details on the required variables for your provider.
+
 ## Usage
 
 1. **Open Required Ports:**  
@@ -176,13 +190,22 @@ The deployment is driven by a compose file that utilizes several environment var
     TRAEFIK_PRIVATE_IPV6=fd00::a00:2
     ```
 
-4. **Deploy with [Docker Compose](https://docs.docker.com/compose/gettingstarted/):**  
+4. **Create a `.dns.env` File:**  
+   Place a `.dns.env` file in the repository root with the required variables for set **[DNS_PROVIDER code](https://go-acme.github.io/lego/dns/index.html)**:
+   ```env
+   OVH_ENDPOINT=ovh-eu
+   OVH_APPLICATION_KEY=your_key
+   OVH_APPLICATION_SECRET=your_secret
+   OVH_CONSUMER_KEY=your_consumer_key
+   ```
+
+5. **Deploy with [Docker Compose](https://docs.docker.com/compose/gettingstarted/):**  
    Run the following command to start the services:
     ```sh
     docker compose up -d
     ```
 
-5. **Automate Updates:**  
+6. **Automate Updates:**  
    To ensure the latest `security.txt` is always served, set up a cron job that automatically pulls the latest repository changes and restarts the container services on the first day of every month at 06:00 UTC. You can create the cron job by running the following shell command:
 
    ```sh
@@ -195,7 +218,7 @@ The deployment is driven by a compose file that utilizes several environment var
 
    This command creates a cron file at `/etc/cron.d/proxy-update` that will automatically pull the latest changes and redeploy the services at the specified time.
 
-6. **Verify the Security File:**  
+7. **Verify the Security File:**  
    Use the provided public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt`.
 
 ## External Integration & DNS Setup
