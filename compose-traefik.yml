@@ -69,7 +69,7 @@ configs:
 
           traefikDashboardRedirect:
             redirectRegex:
-              regex: "^(.+)/?$"
+              regex: "^(${HOSTNAME:?})/?$"
               replacement: "$${1}/dashboard/"
               permanent: true
 
