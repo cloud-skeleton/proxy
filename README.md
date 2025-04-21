@@ -89,6 +89,22 @@ The deployment is driven by a compose file that utilizes several environment var
   HOSTNAME=proxy.example.com
   ```
 
+- **PROXY_NETWORK_IPV4_CIDR**  
+  *Description:* IPv4 CIDR for the proxy's Docker network. Used to define the internal private subnet.  
+  *Default:* `10.0.0.0/24`  
+  *Example:*  
+  ```env
+  PROXY_NETWORK_IPV4_CIDR=10.0.0.0/24
+  ```
+
+- **PROXY_NETWORK_IPV6_CIDR**  
+  *Description:* IPv6 CIDR for the proxy's Docker network. Used to define the internal private subnet.  
+  *Default:* `fd00::/64`  
+  *Example:*  
+  ```env
+  PROXY_NETWORK_IPV6_CIDR=fd00::/64
+  ```
+
 - **SSL_LABS_IPV4_CIDR**  
   *Description:* The IPv4 CIDR block used for **[SSL Labs](https://www.ssllabs.com/ssltest/)** certificate validation.  
   *Default:* `64.41.200.0/24`  
@@ -103,6 +119,22 @@ The deployment is driven by a compose file that utilizes several environment var
   *Example:*  
   ```env
   SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
+  ```
+
+- **TRAEFIK_PRIVATE_IPV4**  
+  *Description:* Static IPv4 address assigned to the Traefik container within the defined proxy network private subnet.  
+  *Default:* `10.0.0.2`  
+  *Example:*  
+  ```env
+  TRAEFIK_PRIVATE_IPV4=10.0.0.2
+  ```
+
+- **TRAEFIK_PRIVATE_IPV6**  
+  *Description:* Static IPv6 address assigned to the Traefik container within the defined proxy network private subnet.  
+  *Default:* `fd00::a00:2`  
+  *Example:*  
+  ```env
+  TRAEFIK_PRIVATE_IPV6=fd00::a00:2
   ```
 
 ## Usage
@@ -128,8 +160,12 @@ The deployment is driven by a compose file that utilizes several environment var
     CERTIFICATE_EMAIL=admin@example.com
     DOCKER_SOCKET=/var/run/docker.sock
     HOSTNAME=proxy.example.com
+    PROXY_NETWORK_IPV4_CIDR=10.0.0.0/24
+    PROXY_NETWORK_IPV6_CIDR=fd00::/64
     SSL_LABS_IPV4_CIDR=64.41.200.0/24
     SSL_LABS_IPV6_CIDR=2600:c02:1020:4202::/64
+    TRAEFIK_PRIVATE_IPV4=10.0.0.2
+    TRAEFIK_PRIVATE_IPV6=fd00::a00:2
     ```
 
 4. **Deploy with [Docker Compose](https://docs.docker.com/compose/gettingstarted/):**  
@@ -148,7 +184,6 @@ The deployment is driven by a compose file that utilizes several environment var
    ```
 
    This command creates a cron file at `/etc/cron.d/container-proxy-update` that will run the `git pull` command in the current directory (as determined by `$(pwd)`) at the specified time.
-
 
 6. **Verify the Security File:**  
    Use the provided public **[GPG](https://www.gnupg.org/gph/en/manual.html)** key (`info@cloudskeleton.eu.public.asc`) to verify the signature of `security.txt`.
