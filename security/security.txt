@@ -2,15 +2,15 @@
 Hash: SHA512
 
 Contact: https://github.com/orgs/cloud-skeleton/discussions
-Expires: 2025-05-01T00:00:00.000Z
+Expires: 2025-06-01T00:00:00.000Z
 Encryption: https://raw.githubusercontent.com/cloud-skeleton/proxy/refs/heads/main/security/info@cloudskeleton.eu.public.asc
 Preferred-Languages: en, lt
 -----BEGIN PGP SIGNATURE-----
 
-iMAFARYKAEAiIQVQwlMXgXBfOuac7LvabiLNEJLkDjmf64o1BWUUTLljAwUCaAZC
-nBYcaW5mb0BjbG91ZHNrZWxldG9uLmV1AAATEgHHQ5QdIrQ+J9WKM0touUtWgCkx
-S5wjURNLxbaHEnBWJDIwmh/2xf+/VxfTc/4N++oj79TrNdq2K6eAAcdEmECoZwCQ
-5API7LgAKNF0b7zaeyMSAW65CV3Dq++uaEotV2NafiKaFI+MFztJcCnUsWh7RDqL
-PQA=
-=jY7v
+iMAFARYKAEAiIQVi9ziCCDEYsJveO89ZyqCWGtk/6sfeWtPCA276IQKJKAUCaBLK
+uxYcaW5mb0BjbG91ZHNrZWxldG9uLmV1AAC5SwHI24MXt57ZvbhSQJDmuL4Ril+9
+MYLwoo5Y+ktZKkhinaeVwXMUZGG6IMb+fl0oR8BR19cmudzT9O6AAcdjKAcTdAVl
+90KBfD65IbWUjymnWZ9KardR0bL7D1BBifI/Saz2CUwO8OoXcA+0y3S6wh5PSwZw
+MQA=
+=oqZ3
 -----END PGP SIGNATURE-----
