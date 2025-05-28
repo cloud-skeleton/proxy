@@ -176,7 +176,7 @@ services:
         - --spider
         - -q
         - https://${HOSTNAME:?}/ping
-    image: traefik:3.4.0
+    image: traefik:3.4.1
     networks:
       bridge:
         aliases:
