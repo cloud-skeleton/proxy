@@ -2,15 +2,15 @@
 Hash: SHA512
 
 Contact: https://github.com/orgs/cloud-skeleton/discussions
-Expires: 2025-06-01T00:00:00.000Z
+Expires: 2025-07-01T00:00:00.000Z
 Encryption: https://raw.githubusercontent.com/cloud-skeleton/proxy/refs/heads/main/security/info@cloudskeleton.eu.public.asc
 Preferred-Languages: en, lt
 -----BEGIN PGP SIGNATURE-----
 
-iMAFARYKAEAiIQVi9ziCCDEYsJveO89ZyqCWGtk/6sfeWtPCA276IQKJKAUCaBLK
-uxYcaW5mb0BjbG91ZHNrZWxldG9uLmV1AAC5SwHI24MXt57ZvbhSQJDmuL4Ril+9
-MYLwoo5Y+ktZKkhinaeVwXMUZGG6IMb+fl0oR8BR19cmudzT9O6AAcdjKAcTdAVl
-90KBfD65IbWUjymnWZ9KardR0bL7D1BBifI/Saz2CUwO8OoXcA+0y3S6wh5PSwZw
-MQA=
-=oqZ3
+iMAFARYKAEAiIQU2d1ZvuQQoK7QGEuU+++dGsUijB63oRk1pv09PKXsQHgUCaDur
+WBYcaW5mb0BjbG91ZHNrZWxldG9uLmV1AABc+wHInYFp59sLV4jeFuKJCAqV1hS8
+EI89CGiGJNlWc7T2nwCZqCzbd3l6IGcxgBELarkzcMUW4AE77ZsAAcjhv1TKfCbU
+LXHwdxgSXIvTX5bDmYD8Gw1tLgUqiB/aqvyfx0mCCPlROCUM4+VBL9yy7JsN2lY9
+HgA=
+=eVO9
 -----END PGP SIGNATURE-----
