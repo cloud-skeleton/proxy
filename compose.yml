@@ -1,6 +1,6 @@
 ---
-include:
-  - compose-resources-reserve.yml
+# include:
+  # - compose-resources-reserve.yml
   # - compose-static-web-server.yml
   # - compose-traefik.yml
 
