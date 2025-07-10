@@ -3,8 +3,6 @@
 #   - compose-static-web-server.yml
 #   - compose-traefik.yml
 
-name: proxy
-
 networks:
   bridge:
     driver: overlay
