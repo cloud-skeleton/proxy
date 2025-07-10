@@ -1,15 +1,18 @@
 ---
 services:
   resources-reserve:
-    command: ["sh", "-c", "sleep infinity"]
+    command: ["sleep", "infinity"]
     deploy:
       mode: global
       resources:
+        limits:
+          cpus: 0.5
+          memory: 512M
         reservations:
-          cpus: "0.5"
-          memory: "512M"
+          cpus: 0.5
+          memory: 512M
     extends:
       file: compose.templates.yml
       service: service
-    image: alpine:3.18
+    image: alpine:3.22.0
 ...
