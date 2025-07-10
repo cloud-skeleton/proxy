@@ -34,6 +34,9 @@ services:
           cpus: 0.5
           memory: 128M
           pids: 1024
+        reservations:
+          cpus: 0.5
+          memory: 128M
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -53,26 +56,30 @@ services:
         monitor: 60s
         order: start-first
         parallelism: 1
-
-
-    # # entrypoint: !reset null
-    # # extends: job
-    # healthcheck:
-    #   interval: 10s
-    #   start_interval: 2s
-    #   start_period: 10s
-    #   timeout: 3s
-    # init: true
-    # logging:
-    #   driver: json-file
-    #   options:
-    #     max-file: 5
-    #     max-size: 10m
-    # mem_swappiness: 0
-    # restart: unless-stopped
-    # security_opt:
-    #   - label:disable
-    # stop_grace_period: 30s
-    # # user: !reset null
-    # userns_mode: keep-id:uid=0,gid=0
+    healthcheck:
+      interval: 10s
+      start_interval: 2s
+      start_period: 10s
+      timeout: 3s
+    init: true
+    logging:
+      driver: json-file
+      options:
+        max-file: 5
+        max-size: 10m
+    mem_swappiness: 0
+    post_start: []
+    pre_stop: []
+    stop_grace_period: 30s
+    ulimits:
+      core: 
+        hard: 0
+        soft: 0
+      nofile:
+        hard: 40000
+        soft: 20000
+      nproc:
+        hard: 65535
+        soft: 65535
+    userns_mode: keep-id:uid=0,gid=0
 ...
