@@ -4,7 +4,7 @@
 #   - compose-traefik.yml
 
 networks:
-  proxy:
+  bridge:
     driver: overlay
     driver_opts:
       encrypted: "true"
