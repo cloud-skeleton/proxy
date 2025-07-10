@@ -10,7 +10,6 @@ networks:
     driver: overlay
     driver_opts:
       encrypted: "true"
-    enable_ipv6: true
     ipam:
       config:
         - subnet: ${PROXY_NETWORK_IPV4_CIDR:-10.0.0.0/24}
