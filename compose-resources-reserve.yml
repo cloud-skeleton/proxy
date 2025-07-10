@@ -1,0 +1,15 @@
+---
+services:
+  resources-reserve:
+    command: ["sh", "-c", "sleep infinity"]
+    deploy:
+      mode: global
+      resources:
+        reservations:
+          cpus: "0.5"
+          memory: "512M"
+    extends:
+      file: compose.templates.yml
+      service: service
+    image: alpine:3.18
+...

@@ -1,7 +1,8 @@
 ---
-# include:
-#   - compose-static-web-server.yml
-#   - compose-traefik.yml
+include:
+  - compose-resources-reserve.yml
+  # - compose-static-web-server.yml
+  # - compose-traefik.yml
 
 networks:
   bridge:
