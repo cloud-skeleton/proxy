@@ -67,12 +67,12 @@ x-templates:
         hard: 65535
         soft: 65535
 
-configs:
-  traefik_dynamic:
-    file:  configs/traefic_dynamic.yml
+# configs:
+#   traefik_dynamic:
+#     file:  configs/traefic_dynamic.yml
 
-  traefik_static:
-    file: configs/traefic_static.yml
+#   traefik_static:
+#     file: configs/traefic_static.yml
 
 networks:
   bridge:
