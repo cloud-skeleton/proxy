@@ -1,8 +1,71 @@
 ---
-# include:
-  # - compose-resources-reserve.yml
-  # - compose-static-web-server.yml
-  # - compose-traefik.yml
+x-templates:
+  service: &service-template
+    deploy: &service-template-deploy
+      endpoint_mode: vip
+      labels:
+        eu.cloudskeleton.service: "true"
+        eu.cloudskeleton.service.type: service
+      mode: replicated
+      placement:
+        constraints:
+          - node.labels.eu.cloudskeleton.node.type=main-worker
+      replicas: 1
+      resources: &service-template-deploy-resources
+        limits:
+          cpus: 0.5
+          memory: 128M
+          pids: 1024
+        reservations:
+          cpus: 0.5
+          memory: 128M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
+      rollback_config:
+        delay: 10s
+        failure_action: continue
+        max_failure_ratio: 0
+        monitor: 60s
+        order: start-first
+        parallelism: 1
+      update_config:
+        delay: 10s
+        failure_action: rollback
+        max_failure_ratio: 0
+        monitor: 60s
+        order: start-first
+        parallelism: 1
+    healthcheck:
+      interval: 10s
+      start_interval: 2s
+      start_period: 10s
+      timeout: 3s
+    init: true
+    logging:
+      driver: json-file
+      options:
+        max-file: 5
+        max-size: 10m
+    mem_swappiness: 0
+    networks:
+      - bridge
+    post_start: []
+    pre_stop: []
+    stop_grace_period: 30s
+    ulimits:
+      core: 
+        hard: 0
+        soft: 0
+      nofile:
+        hard: 40000
+        soft: 20000
+      nproc:
+        hard: 65535
+        soft: 65535
+    userns_mode: keep-id:uid=0,gid=0
 
 networks:
   bridge:
@@ -16,20 +79,20 @@ networks:
 
 services:
   resources-reserve:
+    <<: *service-template
     command: ["sleep", "infinity"]
     deploy:
+      <<: *service-template-deploy
       mode: global
       resources:
+        <<: *service-template-deploy-resources
         limits:
           cpus: 0.5
           memory: 512M
         reservations:
           cpus: 0.5
           memory: 512M
-    extends:
-      file: compose.templates.yml
-      service: service
     image: alpine:3.22.0
     network_mode: none
-    networks: !reset []
+    networks: []
 ...
