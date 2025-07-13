@@ -81,7 +81,7 @@ services:
     deploy:
       <<: *service-template-deploy
       mode: global
-      replicas: null
+      replicas: 0
       resources:
         <<: *service-template-deploy-resources
         limits:
