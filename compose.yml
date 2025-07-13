@@ -102,7 +102,7 @@ services:
         <<: *service-template-deploy-update-config
         order: stop-first
         parallelism: 0
-    image: carsongee/sleep:2025-07-13
+    image: tianon/sleeping-beauty:latest
     networks:
       - isolated
 ...
