@@ -1,21 +1,15 @@
 ---
 x-templates:
-  network: &network-template
-    driver: overlay
-    driver_opts:
-      encrypted: "true"
-
-  service: &service-template
-    deploy: &service-template-deploy
-      endpoint_mode: vip
-      labels: &service-template-deploy-labels
+  job: &job-template
+    deploy: &job-template-deploy
+      labels: &job-template-deploy-labels
         eu.cloudskeleton.service: "true"
-        eu.cloudskeleton.service.type: service
-      mode: replicated
+        eu.cloudskeleton.service.type: job
+      mode: replicated-job
       placement:
         constraints:
           - node.labels.eu.cloudskeleton.node.type==main-worker
-      resources: &service-template-deploy-resources
+      resources: &job-template-deploy-resources
         limits:
           cpus: "0.5"
           memory: 128M
@@ -23,30 +17,12 @@ x-templates:
         reservations:
           cpus: "0.5"
           memory: 128M
-      restart_policy: &service-template-deploy-restart-policy
+      restart_policy: &job-template-deploy-restart-policy
         condition: on-failure
         delay: 5s
         max_attempts: 5
         window: 120s
-      rollback_config: &service-template-deploy-rollback-config
-        delay: 10s
-        failure_action: continue
-        max_failure_ratio: 0
-        monitor: 60s
-        order: start-first
-        parallelism: 1
-      update_config: &service-template-deploy-update-config
-        delay: 10s
-        failure_action: rollback
-        max_failure_ratio: 0
-        monitor: 60s
-        order: start-first
-        parallelism: 1
-    healthcheck: &service-template-deploy-healthcheck
-      interval: 10s
-      start_interval: 2s
-      start_period: 10s
-      timeout: 3s
+    entrypoint: bash -c
     init: true
     logging:
       driver: json-file
@@ -66,6 +42,43 @@ x-templates:
       nproc:
         hard: 65535
         soft: 65535
+
+  network: &network-template
+    driver: overlay
+    driver_opts:
+      encrypted: "true"
+
+  service: &service-template
+    <<: *job-template
+    deploy: &service-template-deploy
+      endpoint_mode: vip
+      labels: &service-template-deploy-labels
+        eu.cloudskeleton.service: "true"
+        eu.cloudskeleton.service.type: service
+      mode: replicated
+      resources: &service-template-deploy-resources
+        <<: *job-template-deploy-resources
+      restart_policy: &service-template-deploy-restart-policy
+        <<: *job-template-deploy-restart-policy
+      rollback_config: &service-template-deploy-rollback-config
+        delay: 10s
+        failure_action: continue
+        max_failure_ratio: 0
+        monitor: 60s
+        order: start-first
+        parallelism: 1
+      update_config: &service-template-deploy-update-config
+        delay: 10s
+        failure_action: rollback
+        max_failure_ratio: 0
+        monitor: 60s
+        order: start-first
+        parallelism: 1
+    healthcheck: &service-template-deploy-healthcheck
+      interval: 10s
+      start_interval: 2s
+      start_period: 10s
+      timeout: 3s
 
 # configs:
 #   traefik_dynamic:
@@ -117,4 +130,42 @@ services:
       isolated:
         aliases:
           - resources-reserve.${BASE_DOMAIN:?}
+
+  # traefik:
+    # <<: *service-template
+    # configs:
+    #   - mode: 0440
+    #     source: traefik_static
+    #     target: /etc/traefik/traefik.yml
+    #   - mode: 0440
+    #     source: traefik_dynamic
+    #     target: /etc/traefik/dynamic.yml
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 48M
+    # env_file: .dns.env
+    # extends:
+    #   file: compose.templates.yml
+    #   service: service
+    # healthcheck:
+    #   # @TODO: Leaving this as workaround until https://github.com/traefik/traefik/issues/11593 is fixed
+    #   test:
+    #     - CMD
+    #     - wget
+    #     - --spider
+    #     - -q
+    #     - https://${HOSTNAME:?}/ping
+    # image: traefik:3.4.3
+    # networks:
+    #   bridge:
+    #     aliases:
+    #       - ${HOSTNAME:?}
+    #     ipv4_address: ${TRAEFIK_PRIVATE_IPV4:-10.0.0.2}
+    # ports:
+    #   - 80:80
+    #   - 443:443
+    # volumes:
+    #   - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock:ro
+    #   - ./state/traefik/certificates:/certificates
 ...
