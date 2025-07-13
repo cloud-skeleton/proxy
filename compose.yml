@@ -61,7 +61,6 @@ x-templates:
       nproc:
         hard: 65535
         soft: 65535
-    userns_mode: keep-id:uid=0,gid=0
 
 networks:
   bridge:
@@ -89,6 +88,5 @@ services:
           cpus: "0.5"
           memory: 512M
     image: alpine:3.22.0
-    network_mode: none
     networks: []
 ...
