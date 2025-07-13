@@ -79,7 +79,8 @@ services:
     deploy:
       <<: *service-template-deploy
       mode: global
-      placement: null
+      placement:
+        constraints: []
       resources:
         <<: *service-template-deploy-resources
         limits:
