@@ -97,9 +97,11 @@ services:
       rollback_config:
         <<: *service-template-deploy-rollback-config
         order: stop-first
+        parallelism: 0
       update_config:
         <<: *service-template-deploy-update-config
         order: stop-first
+        parallelism: 0
     image: carsongee/sleep:2025-07-13
     networks:
       - isolated
