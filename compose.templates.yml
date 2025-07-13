@@ -68,6 +68,8 @@ services:
         max-file: 5
         max-size: 10m
     mem_swappiness: 0
+    networks:
+      - bridge
     post_start: []
     pre_stop: []
     stop_grace_period: 30s

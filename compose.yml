@@ -13,4 +13,23 @@ networks:
       config:
         - subnet: ${PROXY_NETWORK_IPV4_CIDR:-10.0.0.0/24}
         - subnet: ${PROXY_NETWORK_IPV6_CIDR:-fd00::/64}
+
+services:
+  resources-reserve:
+    command: ["sleep", "infinity"]
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 512M
+        reservations:
+          cpus: 0.5
+          memory: 512M
+    extends:
+      file: compose.templates.yml
+      service: service
+    image: alpine:3.22.0
+    network_mode: none
+    networks: !reset []
 ...
