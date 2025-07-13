@@ -9,7 +9,7 @@ x-templates:
       mode: replicated
       placement:
         constraints:
-          - node.labels.eu.cloudskeleton.node.type=main-worker
+          - node.labels.eu.cloudskeleton.node.type==main-worker
       resources: &service-template-deploy-resources
         limits:
           cpus: "0.5"
@@ -79,6 +79,7 @@ services:
     deploy:
       <<: *service-template-deploy
       mode: global
+      placement: null
       resources:
         <<: *service-template-deploy-resources
         limits:
