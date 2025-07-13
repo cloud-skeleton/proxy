@@ -52,7 +52,6 @@ x-templates:
     <<: *job-template
     deploy: &service-template-deploy
       endpoint_mode: vip
-      entrypoint: null
       labels: &service-template-deploy-labels
         eu.cloudskeleton.service: "true"
         eu.cloudskeleton.service.type: service
@@ -75,6 +74,7 @@ x-templates:
         monitor: 60s
         order: start-first
         parallelism: 1
+    entrypoint: null
     healthcheck: &service-template-deploy-healthcheck
       interval: 10s
       start_interval: 2s
