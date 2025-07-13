@@ -89,11 +89,11 @@ services:
       resources:
         <<: *service-template-deploy-resources
         limits:
-          cpus: "0.5"
-          memory: 512M
+          cpus: ${RESERVE_VCPU:-0.5}
+          memory: ${RESERVE_MEMORY:-512M}
         reservations:
-          cpus: "0.5"
-          memory: 512M
+          cpus: ${RESERVE_VCPU:-0.5}
+          memory: ${RESERVE_MEMORY:-512M}
       rollback_config:
         <<: *service-template-deploy-rollback-config
         order: stop-first
