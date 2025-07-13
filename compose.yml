@@ -13,11 +13,11 @@ x-templates:
       replicas: 1
       resources: &service-template-deploy-resources
         limits:
-          cpus: 0.5
+          cpus: "0.5"
           memory: 128M
           pids: 1024
         reservations:
-          cpus: 0.5
+          cpus: "0.5"
           memory: 128M
       restart_policy:
         condition: on-failure
@@ -87,10 +87,10 @@ services:
       resources:
         <<: *service-template-deploy-resources
         limits:
-          cpus: 0.5
+          cpus: "0.5"
           memory: 512M
         reservations:
-          cpus: 0.5
+          cpus: "0.5"
           memory: 512M
     image: alpine:3.22.0
     network_mode: none
