@@ -49,7 +49,6 @@ x-templates:
       options:
         max-file: 5
         max-size: 10m
-    mem_swappiness: 0
     networks:
       - bridge
     stop_grace_period: 30s
