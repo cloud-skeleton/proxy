@@ -3,7 +3,7 @@ x-templates:
   service: &service-template
     deploy: &service-template-deploy
       endpoint_mode: vip
-      labels:
+      labels: &service-template-deploy-labels
         eu.cloudskeleton.service: "true"
         eu.cloudskeleton.service.type: service
       mode: replicated
@@ -18,26 +18,26 @@ x-templates:
         reservations:
           cpus: "0.5"
           memory: 128M
-      restart_policy:
+      restart_policy: &service-template-deploy-restart-policy
         condition: on-failure
         delay: 5s
         max_attempts: 5
         window: 120s
-      rollback_config:
+      rollback_config: &service-template-deploy-rollback-config
         delay: 10s
         failure_action: continue
         max_failure_ratio: 0
         monitor: 60s
         order: start-first
         parallelism: 1
-      update_config:
+      update_config: &service-template-deploy-update-config
         delay: 10s
         failure_action: rollback
         max_failure_ratio: 0
         monitor: 60s
         order: start-first
         parallelism: 1
-    healthcheck:
+    healthcheck: &service-template-deploy-healthcheck
       interval: 10s
       start_interval: 2s
       start_period: 10s
@@ -95,6 +95,12 @@ services:
         reservations:
           cpus: "0.5"
           memory: 512M
+      rollback_config:
+        <<: *service-template-deploy-rollback-config
+        order: stop-first
+      update_config:
+        <<: *service-template-deploy-update-config
+        order: stop-first
     image: alpine:3.22.0
     networks:
       - isolated
