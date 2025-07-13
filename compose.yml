@@ -75,9 +75,11 @@ networks:
         - subnet: ${PROXY_NETWORK_IPV4_CIDR:-10.0.0.0/24}
 
   isolated:
-    <<: *network-template
-    attachable: false
-    internal: true
+    # <<: *network-template
+    # attachable: false
+    # internal: true
+    external: true
+    name: none
 
 services:
   resources-reserve:
