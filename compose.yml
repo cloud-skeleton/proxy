@@ -245,10 +245,12 @@ services:
           memory: ${RESERVE_MEMORY:-512M}
       rollback_config:
         <<: *service-template-deploy-rollback-config
+        monitor: 3s
         order: stop-first
         parallelism: 0
       update_config:
         <<: *service-template-deploy-update-config
+        monitor: 3s
         order: stop-first
         parallelism: 0
     image: tianon/sleeping-beauty:latest
