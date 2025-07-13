@@ -130,6 +130,13 @@ services:
         aliases:
           - resources-reserve.${BASE_DOMAIN:?}
 
+  # traefik-configs:
+  #   <<: *job-template
+  #   command: |
+  #     echo 1
+  #   entrypoint: bash -c
+  #   image: bash:4.0.44
+
   # traefik:
     # <<: *service-template
     # configs:
@@ -167,4 +174,17 @@ services:
     # volumes:
     #   - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock:ro
     #   - ./state/traefik/certificates:/certificates
+
+volumes:
+  proxy:
+    driver: democratic-csi-swarm
+    driver_opts:
+      group: core
+      required-bytes: 268435456
+      scope: multi
+      sharing: all
+      topology-required: eu.cloudskeleton.node=true
+    labels:
+      eu.cloudskeleton.volume: "true"
+      eu.cloudskeleton.volume.type: system
 ...
