@@ -191,17 +191,10 @@ configs:
           asDefault: true
           http:
             encodeQuerySemicolons: true
-            #middlewares:
-            #  - security-headers@file
             tls:
               certResolver: lets-encrypt
           http3: {}
           reusePort: true
-      #experimental:
-      #  plugins:
-      #    static-response:
-      #      moduleName: github.com/tuxgal/traefik_inline_response
-      #      version: v0.1.2
       global:
         checkNewVersion: false
         sendAnonymousUsage: false
@@ -210,8 +203,6 @@ configs:
       ping:
         manualRouting: true
       providers:
-        #file:
-          #filename: /etc/traefik/dynamic.yml
         swarm: {}
       ...
 
