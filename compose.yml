@@ -22,7 +22,6 @@ x-templates:
         delay: 5s
         max_attempts: 5
         window: 120s
-    entrypoint: bash -c
     init: true
     logging:
       driver: json-file
@@ -74,7 +73,6 @@ x-templates:
         monitor: 60s
         order: start-first
         parallelism: 1
-    entrypoint: null
     healthcheck: &service-template-deploy-healthcheck
       interval: 10s
       start_interval: 2s
