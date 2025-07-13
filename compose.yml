@@ -67,153 +67,153 @@ x-templates:
         hard: 65535
         soft: 65535
 
-configs:
-  traefik_dynamic:
-    content: |
-      ---
-      http:
-        routers:
-          ssllabs-certificate-validation:
-            middlewares:
-              - success-response
-            priority: 1000
-            rule: >
-              Host("${HOSTNAME:?}") && ClientIP("${SSL_LABS_IPV4_CIDR:-64.41.200.0/24}")
-            service: noop@internal
+# configs:
+#   traefik_dynamic:
+#     content: |
+#       ---
+#       http:
+#         routers:
+#           ssllabs-certificate-validation:
+#             middlewares:
+#               - success-response
+#             priority: 1000
+#             rule: >
+#               Host("${HOSTNAME:?}") && ClientIP("${SSL_LABS_IPV4_CIDR:-64.41.200.0/24}")
+#             service: noop@internal
 
-          traefik-dashboard:
-            middlewares:
-              - admin-ip-only
-            priority: 1000
-            rule: >
-              Host("${HOSTNAME:?}") &&
-              (PathPrefix("/api/") || PathPrefix("/dashboard/"))
-            service: api@internal
+#           traefik-dashboard:
+#             middlewares:
+#               - admin-ip-only
+#             priority: 1000
+#             rule: >
+#               Host("${HOSTNAME:?}") &&
+#               (PathPrefix("/api/") || PathPrefix("/dashboard/"))
+#             service: api@internal
 
-          traefik-dashboard-redirect:
-            middlewares:
-              - traefik-dashboard-redirect
-            priority: 1000
-            rule: Host("${HOSTNAME:?}") && Path("/")
-            service: noop@internal
+#           traefik-dashboard-redirect:
+#             middlewares:
+#               - traefik-dashboard-redirect
+#             priority: 1000
+#             rule: Host("${HOSTNAME:?}") && Path("/")
+#             service: noop@internal
 
-          traefik-ping:
-            middlewares:
-              - local-ip-only
-            priority: 1000
-            rule: Host("${HOSTNAME:?}") && Path("/ping")
-            service: ping@internal
+#           traefik-ping:
+#             middlewares:
+#               - local-ip-only
+#             priority: 1000
+#             rule: Host("${HOSTNAME:?}") && Path("/ping")
+#             service: ping@internal
 
-        middlewares:
-          admin-ip-only:
-            IPAllowList:
-              sourceRange:
-                - ${ADMIN_ALLOW_IP_CIDR:?}
+#         middlewares:
+#           admin-ip-only:
+#             IPAllowList:
+#               sourceRange:
+#                 - ${ADMIN_ALLOW_IP_CIDR:?}
 
-          local-ip-only:
-            IPAllowList:
-              sourceRange:
-                - 127.0.0.0/8
-                - ::1/128
-                - ${TRAEFIK_PRIVATE_IPV4:-10.0.0.2}
-                - ${TRAEFIK_PRIVATE_IPV6:-fd00::a00:2}
+#           local-ip-only:
+#             IPAllowList:
+#               sourceRange:
+#                 - 127.0.0.0/8
+#                 - ::1/128
+#                 - ${TRAEFIK_PRIVATE_IPV4:-10.0.0.2}
+#                 - ${TRAEFIK_PRIVATE_IPV6:-fd00::a00:2}
 
-          security-headers:
-            headers:
-              browserXssFilter: true
-              contentTypeNosniff: true
-              forceStsHeader: true
-              frameDeny: true
-              stsIncludeSubdomains: true
-              stsPreload: true
-              stsSeconds: 31536000
+#           security-headers:
+#             headers:
+#               browserXssFilter: true
+#               contentTypeNosniff: true
+#               forceStsHeader: true
+#               frameDeny: true
+#               stsIncludeSubdomains: true
+#               stsPreload: true
+#               stsSeconds: 31536000
 
-          success-response:
-            plugin:
-              static-response:
-                fallback:
-                  statusCode: 200
+#           success-response:
+#             plugin:
+#               static-response:
+#                 fallback:
+#                   statusCode: 200
 
-          traefik-dashboard-redirect:
-            redirectRegex:
-              regex: "^(.+)/$"
-              replacement: "$${1}/dashboard/"
-              permanent: true
+#           traefik-dashboard-redirect:
+#             redirectRegex:
+#               regex: "^(.+)/$"
+#               replacement: "$${1}/dashboard/"
+#               permanent: true
 
-        serversTransports:
-          self-signed:
-            insecureSkipVerify: true
+#         serversTransports:
+#           self-signed:
+#             insecureSkipVerify: true
 
-      tls:
-        options:
-          default:
-            minVersion: VersionTLS12
-            cipherSuites:
-              - TLS_AES_256_GCM_SHA384
-              - TLS_CHACHA20_POLY1305_SHA256
-              - TLS_AES_128_GCM_SHA256
-              - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
-              - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
-              - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-            curvePreferences:
-              - secp521r1
-              - secp384r1
-              - x25519
-              - secp256r1
-            sniStrict: true
-      ...
+#       tls:
+#         options:
+#           default:
+#             minVersion: VersionTLS12
+#             cipherSuites:
+#               - TLS_AES_256_GCM_SHA384
+#               - TLS_CHACHA20_POLY1305_SHA256
+#               - TLS_AES_128_GCM_SHA256
+#               - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+#               - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+#               - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+#             curvePreferences:
+#               - secp521r1
+#               - secp384r1
+#               - x25519
+#               - secp256r1
+#             sniStrict: true
+#       ...
 
-  traefik_static:
-    content: |
-      ---
-      api: {}
-      certificatesResolvers:
-        lets-encrypt:
-          acme:
-            dnsChallenge:
-              provider: ${DNS_PROVIDER:?}
-            email: ${CERTIFICATE_EMAIL:?}
-            keyType: EC384
-            storage: /certificates/acme.json
-      entrypoints:
-        http:
-          address: :80
-          http:
-            encodeQuerySemicolons: true
-            redirections:
-              entryPoint:
-                permanent: true
-                to: https
-          http3: {}
-          reusePort: true
-        https:
-          address: :443
-          asDefault: true
-          http:
-            encodeQuerySemicolons: true
-            middlewares:
-              - security-headers@file
-            tls:
-              certResolver: lets-encrypt
-          http3: {}
-          reusePort: true
-      experimental:
-        plugins:
-          static-response:
-            moduleName: github.com/tuxgal/traefik_inline_response
-            version: v0.1.2
-      global:
-        checkNewVersion: false
-        sendAnonymousUsage: false
-      log:
-        level: INFO
-      ping:
-        manualRouting: true
-      providers:
-        file:
-          filename: /etc/traefik/dynamic.yml
-        swarm: {}
-      ...
+#   traefik_static:
+#     content: |
+#       ---
+#       api: {}
+#       certificatesResolvers:
+#         lets-encrypt:
+#           acme:
+#             dnsChallenge:
+#               provider: ${DNS_PROVIDER:?}
+#             email: ${CERTIFICATE_EMAIL:?}
+#             keyType: EC384
+#             storage: /certificates/acme.json
+#       entrypoints:
+#         http:
+#           address: :80
+#           http:
+#             encodeQuerySemicolons: true
+#             redirections:
+#               entryPoint:
+#                 permanent: true
+#                 to: https
+#           http3: {}
+#           reusePort: true
+#         https:
+#           address: :443
+#           asDefault: true
+#           http:
+#             encodeQuerySemicolons: true
+#             middlewares:
+#               - security-headers@file
+#             tls:
+#               certResolver: lets-encrypt
+#           http3: {}
+#           reusePort: true
+#       experimental:
+#         plugins:
+#           static-response:
+#             moduleName: github.com/tuxgal/traefik_inline_response
+#             version: v0.1.2
+#       global:
+#         checkNewVersion: false
+#         sendAnonymousUsage: false
+#       log:
+#         level: INFO
+#       ping:
+#         manualRouting: true
+#       providers:
+#         file:
+#           filename: /etc/traefik/dynamic.yml
+#         swarm: {}
+#       ...
 
 networks:
   bridge:
