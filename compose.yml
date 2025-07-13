@@ -1,5 +1,10 @@
 ---
 x-templates:
+  network: &network-template
+    driver: overlay
+    driver_opts:
+      encrypted: "true"
+
   service: &service-template
     deploy: &service-template-deploy
       endpoint_mode: vip
@@ -64,18 +69,14 @@ x-templates:
 
 networks:
   bridge:
-    driver: overlay
-    driver_opts:
-      encrypted: "true"
+    <<: *network-template
     ipam:
       config:
         - subnet: ${PROXY_NETWORK_IPV4_CIDR:-10.0.0.0/24}
-        - subnet: ${PROXY_NETWORK_IPV6_CIDR:-fd00::/64}
+
   isolated:
+    <<: *network-template
     attachable: false
-    driver: overlay
-    driver_opts:
-      encrypted: "true"
     internal: true
 
 services:
