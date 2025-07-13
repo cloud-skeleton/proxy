@@ -71,6 +71,12 @@ networks:
       config:
         - subnet: ${PROXY_NETWORK_IPV4_CIDR:-10.0.0.0/24}
         - subnet: ${PROXY_NETWORK_IPV6_CIDR:-fd00::/64}
+  isolated:
+    attachable: false
+    driver: overlay
+    driver_opts:
+      encrypted: "true"
+    internal: true
 
 services:
   resources-reserve:
@@ -90,5 +96,6 @@ services:
           cpus: "0.5"
           memory: 512M
     image: alpine:3.22.0
-    networks: []
+    networks:
+      - isolated
 ...
