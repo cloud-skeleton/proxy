@@ -81,7 +81,6 @@ networks:
 services:
   resources-reserve:
     <<: *service-template
-    command: ["sleep", "infinity"]
     deploy:
       <<: *service-template-deploy
       mode: global
@@ -101,7 +100,7 @@ services:
       update_config:
         <<: *service-template-deploy-update-config
         order: stop-first
-    image: alpine:3.22.0
+    image: carsongee/sleep:2025-07-13
     networks:
       - isolated
 ...
