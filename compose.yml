@@ -93,12 +93,12 @@ x-templates:
     ulimits: &service-template-ulimits
       <<: *job-template-ulimits
 
-configs:
-  traefik_dynamic.v1:
-    file:  configs/traefic_dynamic.yml
+# configs:
+#   traefik_dynamic.v1:
+#     file:  configs/traefic_dynamic.yml
 
-  traefik_static.v1:
-    file: configs/traefic_static.yml
+#   traefik_static.v1:
+#     file: configs/traefic_static.yml
 
 networks:
   bridge:
