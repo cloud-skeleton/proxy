@@ -100,7 +100,7 @@ networks:
     <<: *network-template
     ipam:
       config:
-        - subnet: ${PROXY_NETWORK_CIDR:-10.0.0.0/24}
+        - subnet: ${PROXY_NETWORK_CIDR:-10.10.0.0/24}
 
   isolated:
     <<: *network-template
@@ -156,13 +156,13 @@ services:
       - source: traefik_static.v1
         target: /tmp/traefic_static.yml
     environment:
-      ADMIN_ALLOW_IP_CIDR_1: ${ADMIN_ALLOW_IP_CIDR_1}
-      ADMIN_ALLOW_IP_CIDR_2: ${ADMIN_ALLOW_IP_CIDR_2}
-      CERTIFICATE_EMAIL: ${CERTIFICATE_EMAIL}
-      DNS_PROVIDER: ${DNS_PROVIDER}
-      SSL_LABS_CIDR: ${SSL_LABS_CIDR}
-      TRAEFIK_HOSTNAME: ${TRAEFIK_HOSTNAME}
-      TRAEFIK_PRIVATE_IP: ${TRAEFIK_PRIVATE_IP}
+      ADMIN_ALLOW_IP_CIDR_1: ${ADMIN_ALLOW_IP_CIDR_1:?}
+      ADMIN_ALLOW_IP_CIDR_2: ${ADMIN_ALLOW_IP_CIDR_2:-127.0.0.1}
+      CERTIFICATE_EMAIL: ${CERTIFICATE_EMAIL:?}
+      DNS_PROVIDER: ${DNS_PROVIDER:?}
+      SSL_LABS_CIDR: ${SSL_LABS_CIDR:-64.41.200.0/24}
+      TRAEFIK_HOSTNAME: ${TRAEFIK_HOSTNAME:?}
+      TRAEFIK_PRIVATE_IP: ${TRAEFIK_PRIVATE_IP:-10.10.0.2}
     volumes:
       - source: proxy
         target: /data/traefik/configs
