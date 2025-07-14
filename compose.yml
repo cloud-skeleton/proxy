@@ -22,8 +22,10 @@ x-templates:
         delay: 5s
         max_attempts: 5
         window: 120s
+    entrypoint: bash -c
+    image: bash:4.0.44
     init: true
-    logging:
+    logging: &job-template-logging
       driver: json-file
       options:
         max-file: 5
@@ -31,7 +33,7 @@ x-templates:
     networks:
       - bridge
     stop_grace_period: 30s
-    ulimits:
+    ulimits: &job-template-ulimits
       core: 
         hard: 0
         soft: 0
@@ -48,7 +50,6 @@ x-templates:
       encrypted: "true"
 
   service: &service-template
-    <<: *job-template
     deploy: &service-template-deploy
       endpoint_mode: vip
       labels: &service-template-deploy-labels
@@ -78,13 +79,21 @@ x-templates:
       start_interval: 2s
       start_period: 10s
       timeout: 3s
+    init: true
+    logging: &service-template-logging
+      <<: *job-template-logging
+    networks:
+      - bridge
+    stop_grace_period: 30s
+    ulimits: &service-template-ulimits
+      <<: *job-template-ulimits
 
-# configs:
-#   traefik_dynamic:
-#     file:  configs/traefic_dynamic.yml
+configs:
+  traefik_dynamic.v1:
+    file:  configs/traefic_dynamic.yml
 
-#   traefik_static:
-#     file: configs/traefic_static.yml
+  traefik_static.v1:
+    file: configs/traefic_static.yml
 
 networks:
   bridge:
@@ -130,12 +139,26 @@ services:
         aliases:
           - resources-reserve.${BASE_DOMAIN:?}
 
-  # traefik-configs:
-  #   <<: *job-template
-  #   command: |
-  #     echo 1
-  #   entrypoint: bash -c
-  #   image: bash:4.0.44
+  traefik-configs-process:
+    <<: *job-template
+    command: |
+      ls -al /tmp/traefic_dynamic.yml
+      cat /tmp/traefic_dynamic.yml
+      ls -la /tmp/traefic_static.yml
+      cat /tmp/traefic_static.yml
+      ls -al /data/traefik/configs
+      ls -al /data/traefik/configs/
+    configs:
+      - source: traefik_dynamic.v1
+        target: /tmp/traefic_dynamic.yml
+      - source: traefik_static.v1
+        target: /tmp/traefic_static.yml
+    volumes:
+      - source: proxy
+        target: /data/traefik/configs
+        type: cluster
+        volume:
+          subpath: traefik/configs
 
   # traefik:
     # <<: *service-template
@@ -179,7 +202,7 @@ volumes:
   proxy:
     driver: democratic-csi-swarm
     driver_opts:
-      group: core
+      group: system
       required-bytes: 268435456
       scope: multi
       sharing: all
