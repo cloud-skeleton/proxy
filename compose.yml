@@ -215,15 +215,29 @@ services:
     #   - ./state/traefik/certificates:/certificates
 
 volumes:
-  proxy:
-    driver: democratic-csi-swarm
-    driver_opts:
-      group: system
-      required-bytes: 10737418240
-      scope: multi
-      sharing: all
-      topology-required: eu.cloudskeleton.node=true
-    labels:
-      eu.cloudskeleton.volume: "true"
-      eu.cloudskeleton.volume.type: system
+  # @TODO: Right now SwarmKit does not automatically create volumes using CSI.
+  # docker volume create \
+  #   -d democratic-csi-swarm \
+  #   --group system \
+  #   --label eu.cloudskeleton.volume=true \
+  #   --label eu.cloudskeleton.volume.type=system \
+  #   --scope multi \
+  #   --sharing all \
+  #   --required-bytes 25G \
+  #   --topology-required eu.cloudskeleton.node=true \
+  #     data
+  data:
+    external: true
+
+  # data:
+  #   driver: democratic-csi-swarm
+  #   driver_opts:
+  #     group: system
+  #     required-bytes: 25G
+  #     scope: multi
+  #     sharing: all
+  #     topology-required: eu.cloudskeleton.node=true
+  #   labels:
+  #     eu.cloudskeleton.volume: "true"
+  #     eu.cloudskeleton.volume.type: system
 ...
