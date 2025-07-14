@@ -170,7 +170,7 @@ services:
       TRAEFIK_HOSTNAME: ${TRAEFIK_HOSTNAME:?}
       TRAEFIK_PRIVATE_IP: ${TRAEFIK_PRIVATE_IP:-10.10.0.2}
     volumes:
-      - source: proxy
+      - source: data
         target: /data
         type: cluster
         # volume:
