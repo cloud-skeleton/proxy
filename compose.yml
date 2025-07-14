@@ -52,7 +52,7 @@ x-templates:
 
   service: &service-template
     deploy: &service-template-deploy
-      endpoint_mode: vip
+      # endpoint_mode: vip
       labels: &service-template-deploy-labels
         eu.cloudskeleton.service: "true"
         eu.cloudskeleton.service.type: service
@@ -109,8 +109,8 @@ networks:
 
   isolated:
     <<: *network-template
-    # attachable: false
-    # internal: true
+    attachable: false
+    internal: true
 
 services:
   resources-reserve:
