@@ -216,10 +216,10 @@ services:
 
 volumes:
   proxy:
-    driver: democratic-csi-swarm:latest
+    driver: democratic-csi-swarm
     driver_opts:
       group: system
-      required-bytes: 268435456
+      required-bytes: 10737418240
       scope: multi
       sharing: all
       topology-required: eu.cloudskeleton.node=true
