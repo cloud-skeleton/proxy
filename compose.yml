@@ -6,10 +6,10 @@ x-templates:
         eu.cloudskeleton.service: "true"
         eu.cloudskeleton.service.type: job
       mode: replicated-job
-      placement:
-        constraints:
-          - node.labels.eu.cloudskeleton.node==true
-          - node.labels.eu.cloudskeleton.node.type==main-worker
+      # placement:
+      #   constraints:
+      #     - node.labels.eu.cloudskeleton.node==true
+      #     - node.labels.eu.cloudskeleton.node.type==main-worker
       resources: &job-template-deploy-resources
         limits:
           cpus: "0.5"
@@ -216,13 +216,13 @@ services:
 
 volumes:
   proxy:
-    driver: "democratic-csi-swarm:latest"
+    driver: democratic-csi-swarm:latest
     driver_opts:
       group: system
       required-bytes: 10737418240
       scope: multi
       sharing: all
-      topology-required: eu.cloudskeleton.node=true
+      # topology-required: eu.cloudskeleton.node=true
     labels:
       eu.cloudskeleton.volume: "true"
       eu.cloudskeleton.volume.type: system
