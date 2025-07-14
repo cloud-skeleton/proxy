@@ -8,7 +8,7 @@ x-templates:
       mode: replicated-job
       placement:
         constraints:
-          - eu.cloudskeleton.node.type==main-worker
+          - node.labels.eu.cloudskeleton.node.type==main-worker
       resources: &job-template-deploy-resources
         limits:
           cpus: "0.5"
@@ -115,7 +115,7 @@ services:
       mode: global
       placement:
         constraints:
-          - eu.cloudskeleton.node==true
+          - node.labels.eu.cloudskeleton.node==true
       resources:
         <<: *service-template-deploy-resources
         limits:
