@@ -6,10 +6,10 @@ x-templates:
         eu.cloudskeleton.service: "true"
         eu.cloudskeleton.service.type: job
       mode: replicated-job
-      placement:
-        constraints:
-          - node.labels.eu.cloudskeleton.node==true
-          - node.labels.eu.cloudskeleton.node.type==main-worker
+      # placement:
+      #   constraints:
+      #     - node.labels.eu.cloudskeleton.node==true
+      #     - node.labels.eu.cloudskeleton.node.type==main-worker
       resources: &job-template-deploy-resources
         limits:
           cpus: "0.5"
