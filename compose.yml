@@ -218,12 +218,12 @@ volumes:
   proxy:
     driver: democratic-csi-swarm:latest
     driver_opts:
-      group: system
+      # group: system
       required-bytes: 10737418240
-      scope: multi
-      sharing: all
+      # scope: multi
+      # sharing: all
       # topology-required: eu.cloudskeleton.node=true
-    labels:
-      eu.cloudskeleton.volume: "true"
-      eu.cloudskeleton.volume.type: system
+    # labels:
+    #   eu.cloudskeleton.volume: "true"
+    #   eu.cloudskeleton.volume.type: system
 ...
