@@ -109,8 +109,8 @@ networks:
 
   isolated:
     <<: *network-template
-    attachable: false
-    internal: true
+    # attachable: false
+    # internal: true
 
 services:
   resources-reserve:
