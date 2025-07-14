@@ -8,6 +8,7 @@ x-templates:
       mode: replicated-job
       placement:
         constraints:
+          - node.labels.eu.cloudskeleton.node==true
           - node.labels.eu.cloudskeleton.node.type==main-worker
       resources: &job-template-deploy-resources
         limits:
@@ -56,6 +57,10 @@ x-templates:
         eu.cloudskeleton.service: "true"
         eu.cloudskeleton.service.type: service
       mode: replicated
+      placement:
+        constraints:
+          - node.labels.eu.cloudskeleton.node==true
+          - node.labels.eu.cloudskeleton.node.type==main-worker
       resources: &service-template-deploy-resources
         <<: *job-template-deploy-resources
       restart_policy: &service-template-deploy-restart-policy
