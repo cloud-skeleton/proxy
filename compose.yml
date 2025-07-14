@@ -216,7 +216,7 @@ services:
 
 volumes:
   proxy:
-    driver: ghcr.io/cloud-skeleton/democratic-csi-swarm
+    driver: democratic-csi-swarm
     driver_opts:
       group: system
       required_bytes: 10737418240
