@@ -171,7 +171,7 @@ services:
       TRAEFIK_PRIVATE_IP: ${TRAEFIK_PRIVATE_IP:-10.10.0.2}
     volumes:
       - source: proxy
-        target: /data/traefik/configs
+        target: /data
         type: cluster
         # volume:
         #   subpath: traefik/configs
@@ -219,10 +219,10 @@ volumes:
     driver: democratic-csi-swarm
     driver_opts:
       group: system
-      required_bytes: 10737418240
+      required-bytes: 10737418240
       scope: multi
       sharing: all
-      topology_required: eu.cloudskeleton.node=true
+      topology-required: eu.cloudskeleton.node=true
     labels:
       eu.cloudskeleton.volume: "true"
       eu.cloudskeleton.volume.type: system
