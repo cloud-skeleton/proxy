@@ -109,7 +109,7 @@ networks:
 
   isolated:
     <<: *network-template
-    attachable: false
+    # attachable: false
     internal: true
 
 services:
