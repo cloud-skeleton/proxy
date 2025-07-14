@@ -4,15 +4,15 @@ http:
     admin-ip-only:
       IPAllowList:
         sourceRange:
-          - ${ADMIN_ALLOW_IP_CIDR_1:?}
-          - ${ADMIN_ALLOW_IP_CIDR_2:?}
+          - ${ADMIN_ALLOW_IP_CIDR_1}
+          - ${ADMIN_ALLOW_IP_CIDR_2}
 
     local-ip-only:
       IPAllowList:
         sourceRange:
           - 127.0.0.0/8
           - ::1/128
-          - ${TRAEFIK_PRIVATE_IP:-10.0.0.2}
+          - ${TRAEFIK_PRIVATE_IP}
 
     security-headers:
       headers:
@@ -42,7 +42,7 @@ http:
         - success-response
       priority: 1000
       rule: >
-        Host("${TRAEFIK_HOSTNAME:?}") && ClientIP("${SSL_LABS_CIDR:-64.41.200.0/24}")
+        Host("${TRAEFIK_HOSTNAME}") && ClientIP("${SSL_LABS_CIDR}")
       service: noop@internal
 
     traefik-dashboard:
@@ -50,21 +50,21 @@ http:
         - admin-ip-only
       priority: 1000
       rule: >
-        Host("${TRAEFIK_HOSTNAME:?}") && (PathPrefix("/api/") || PathPrefix("/dashboard/"))
+        Host("${TRAEFIK_HOSTNAME}") && (PathPrefix("/api/") || PathPrefix("/dashboard/"))
       service: api@internal
 
     traefik-dashboard-redirect:
       middlewares:
         - traefik-dashboard-redirect
       priority: 1000
-      rule: Host("${TRAEFIK_HOSTNAME:?}") && Path("/")
+      rule: Host("${TRAEFIK_HOSTNAME}") && Path("/")
       service: noop@internal
 
     traefik-ping:
       middlewares:
         - local-ip-only
       priority: 1000
-      rule: Host("${TRAEFIK_HOSTNAME:?}") && Path("/ping")
+      rule: Host("${TRAEFIK_HOSTNAME}") && Path("/ping")
       service: ping@internal
 
   serversTransports:

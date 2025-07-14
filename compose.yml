@@ -148,11 +148,21 @@ services:
       cat /tmp/traefic_static.yml
       ls -al /data/traefik/configs
       ls -al /data/traefik/configs/
+      envsubst < /tmp/traefic_dynamic.yml
+      envsubst < /tmp/traefic_static.yml
     configs:
       - source: traefik_dynamic.v1
         target: /tmp/traefic_dynamic.yml
       - source: traefik_static.v1
         target: /tmp/traefic_static.yml
+    environment:
+      ADMIN_ALLOW_IP_CIDR_1: ${ADMIN_ALLOW_IP_CIDR_1}
+      ADMIN_ALLOW_IP_CIDR_2: ${ADMIN_ALLOW_IP_CIDR_2}
+      CERTIFICATE_EMAIL: ${CERTIFICATE_EMAIL}
+      DNS_PROVIDER: ${DNS_PROVIDER}
+      SSL_LABS_CIDR: ${SSL_LABS_CIDR}
+      TRAEFIK_HOSTNAME: ${TRAEFIK_HOSTNAME}
+      TRAEFIK_PRIVATE_IP: ${TRAEFIK_PRIVATE_IP}
     volumes:
       - source: proxy
         target: /data/traefik/configs

@@ -4,8 +4,8 @@ certificatesResolvers:
   lets-encrypt:
     acme:
       dnsChallenge:
-        provider: ${DNS_PROVIDER:?}
-      email: ${CERTIFICATE_EMAIL:?}
+        provider: ${DNS_PROVIDER}
+      email: ${CERTIFICATE_EMAIL}
       keyType: EC384
       storage: /certificates/acme.json
 entrypoints:
