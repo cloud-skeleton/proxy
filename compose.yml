@@ -98,9 +98,9 @@ configs:
 networks:
   bridge:
     <<: *network-template
-    ipam:
-      config:
-        - subnet: ${PROXY_NETWORK_CIDR:-10.0.0.0/24}
+    # ipam:
+    #   config:
+    #     - subnet: ${PROXY_NETWORK_CIDR:-10.0.0.0/24}
 
   isolated:
     <<: *network-template
