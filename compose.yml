@@ -93,12 +93,12 @@ x-templates:
     ulimits: &service-template-ulimits
       <<: *job-template-ulimits
 
-# configs:
-#   traefik_dynamic.v1:
-#     file:  configs/traefic_dynamic.yml
+configs:
+  traefik_dynamic.v1:
+    file: ./configs/traefic_dynamic.yml
 
-#   traefik_static.v1:
-#     file: configs/traefic_static.yml
+  traefik_static.v1:
+    file: ./configs/traefic_static.yml
 
 networks:
   bridge:
@@ -109,7 +109,7 @@ networks:
 
   isolated:
     <<: *network-template
-    # attachable: false
+    attachable: false
     internal: true
 
 services:
@@ -156,11 +156,11 @@ services:
       ls -al /data/traefik/configs/
       envsubst < /tmp/traefic_dynamic.yml
       envsubst < /tmp/traefic_static.yml
-    # configs:
-    #   - source: traefik_dynamic.v1
-    #     target: /tmp/traefic_dynamic.yml
-    #   - source: traefik_static.v1
-    #     target: /tmp/traefic_static.yml
+    configs:
+      - source: traefik_dynamic.v1
+        target: /tmp/traefic_dynamic.yml
+      - source: traefik_static.v1
+        target: /tmp/traefic_static.yml
     environment:
       ADMIN_ALLOW_IP_CIDR_1: ${ADMIN_ALLOW_IP_CIDR_1:?}
       ADMIN_ALLOW_IP_CIDR_2: ${ADMIN_ALLOW_IP_CIDR_2:-127.0.0.1}
