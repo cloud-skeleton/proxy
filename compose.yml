@@ -106,11 +106,13 @@ networks:
     ipam:
       config:
         - subnet: ${PROXY_NETWORK_CIDR:-10.10.0.0/24}
+    name: bridge
 
   isolated:
     <<: *network-template
     attachable: false
     internal: true
+    name: isolated
 
 services:
   resources-reserve:
@@ -141,10 +143,9 @@ services:
         parallelism: 0
     image: tianon/sleeping-beauty:latest
     networks:
-      bridge:
-      # isolated:
-      #   aliases:
-      #     - resources-reserve.${BASE_DOMAIN:?}
+      isolated:
+        aliases:
+          - resources-reserve.${BASE_DOMAIN:?}
     volumes:
       - source: data
         target: /data
