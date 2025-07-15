@@ -141,9 +141,10 @@ services:
         parallelism: 0
     image: tianon/sleeping-beauty:latest
     networks:
-      isolated:
-        aliases:
-          - resources-reserve.${BASE_DOMAIN:?}
+      bridge:
+      # isolated:
+      #   aliases:
+      #     - resources-reserve.${BASE_DOMAIN:?}
     volumes:
       - source: data
         target: /data
