@@ -149,7 +149,9 @@ services:
     <<: *job-template
     command: 
       - |
-        echo YES
+        ls -la /data/
+        touch /data/test.log
+        ls -la /data
         # ls -al /tmp/traefic_dynamic.yml
         # cat /tmp/traefic_dynamic.yml
         # ls -la /tmp/traefic_static.yml
