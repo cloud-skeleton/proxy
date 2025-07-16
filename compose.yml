@@ -5,7 +5,7 @@ x-templates:
       labels: &job-template-deploy-labels
         eu.cloudskeleton.service: "true"
         eu.cloudskeleton.service.type: job
-      mode: replicated
+      mode: replicated-job
       placement:
         constraints:
           - node.labels.eu.cloudskeleton.node==true
