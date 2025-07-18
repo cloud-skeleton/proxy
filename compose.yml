@@ -226,9 +226,10 @@ volumes:
   #   --label eu.cloudskeleton.volume=true \
   #   --label eu.cloudskeleton.volume.type=system \
   #   --scope multi \
-  #   --sharing all \
-  #   --required-bytes 25G \
+  #   --sharing onewriter \
+  #   --required-bytes 100G \
   #   --topology-required eu.cloudskeleton.node=true \
+  #   --type mount \
   #     data
   data:
     external: true
